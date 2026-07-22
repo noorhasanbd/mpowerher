@@ -12,16 +12,16 @@ export default function Navbar() {
   const isLinkActive = (href: string) => pathname === href;
   const isParentActive = (paths: string[]) => paths.some((path) => pathname.startsWith(path));
 
-  const whatWeDoLinks = [
-    { name: 'Our Work', href: '/what-we-do/our-work' },
-    { name: 'Our Impact', href: '/what-we-do/our-impact' },
-  ];
-
   const whoWeAreLinks = [
     { name: 'About Us', href: '/who-we-are/about-us' },
     { name: 'Our Team', href: '/who-we-are/our-team' },
     { name: 'Resources', href: '/who-we-are/resources' },
     { name: 'Volunteer with Us', href: '/who-we-are/volunteer' },
+  ];
+
+  const whatWeDoLinks = [
+    { name: 'Our Work', href: '/what-we-do/our-work' },
+    { name: 'Our Impact', href: '/what-we-do/our-impact' },
   ];
 
   return (
@@ -55,13 +55,13 @@ export default function Navbar() {
                 </Link>
               </li>
 
-              {/* Mobile: What We Do */}
+              {/* Mobile: Who We Are */}
               <li className="space-y-1">
                 <span className="font-heading font-semibold text-xs uppercase tracking-wider text-slate-400 px-3 py-1">
-                  What We Do
+                  Who We Are
                 </span>
                 <ul className="pl-2 space-y-1">
-                  {whatWeDoLinks.map((link) => (
+                  {whoWeAreLinks.map((link) => (
                     <li key={link.href}>
                       <Link 
                         href={link.href}
@@ -74,13 +74,13 @@ export default function Navbar() {
                 </ul>
               </li>
 
-              {/* Mobile: Who We Are */}
+              {/* Mobile: What We Do */}
               <li className="space-y-1">
                 <span className="font-heading font-semibold text-xs uppercase tracking-wider text-slate-400 px-3 py-1">
-                  Who We Are
+                  What We Do
                 </span>
                 <ul className="pl-2 space-y-1">
-                  {whoWeAreLinks.map((link) => (
+                  {whatWeDoLinks.map((link) => (
                     <li key={link.href}>
                       <Link 
                         href={link.href}
@@ -140,39 +140,6 @@ export default function Navbar() {
             Home
           </Link>
 
-          {/* WHAT WE DO DROPDOWN */}
-          <div className="relative group">
-            <button 
-              className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-base transition-all ${
-                isParentActive(['/what-we-do']) 
-                  ? 'bg-pink-100/80 text-[#C01C5C] font-bold' 
-                  : 'hover:text-[#C01C5C] hover:bg-pink-50/80'
-              }`}
-            >
-              <span>What We Do</span>
-              <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-            </button>
-
-            {/* Dropdown Menu Box */}
-            <div className="absolute top-full left-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out">
-              <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
-                {whatWeDoLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`block px-4 py-2.5 text-sm rounded-xl transition-colors ${
-                      isLinkActive(link.href)
-                        ? 'bg-pink-50 text-[#C01C5C] font-bold'
-                        : 'text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50/60 font-medium'
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-
           {/* WHO WE ARE DROPDOWN */}
           <div className="relative group">
             <button 
@@ -190,6 +157,39 @@ export default function Navbar() {
             <div className="absolute top-full left-0 pt-2 w-60 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out">
               <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
                 {whoWeAreLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`block px-4 py-2.5 text-sm rounded-xl transition-colors ${
+                      isLinkActive(link.href)
+                        ? 'bg-pink-50 text-[#C01C5C] font-bold'
+                        : 'text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50/60 font-medium'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* WHAT WE DO DROPDOWN */}
+          <div className="relative group">
+            <button 
+              className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-base transition-all ${
+                isParentActive(['/what-we-do']) 
+                  ? 'bg-pink-100/80 text-[#C01C5C] font-bold' 
+                  : 'hover:text-[#C01C5C] hover:bg-pink-50/80'
+              }`}
+            >
+              <span>What We Do</span>
+              <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+            </button>
+
+            {/* Dropdown Menu Box */}
+            <div className="absolute top-full left-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out">
+              <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
+                {whatWeDoLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
