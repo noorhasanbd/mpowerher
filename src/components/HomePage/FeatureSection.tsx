@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
 import { BookOpen, Users, ShieldCheck, Sparkles, ArrowUpRight } from 'lucide-react';
 
 const features = [
@@ -31,39 +31,39 @@ const features = [
   },
 ];
 
+// Explicitly typed Framer Motion Variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: -20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: 'easeOut' },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 35 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 90, damping: 18 },
+  },
+};
+
 export default function FeaturesSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
-
-  // Stagger Orchestration
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 35 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', stiffness: 90, damping: 18 },
-    },
-  };
 
   return (
     <section

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
 import { GraduationCap, BookOpenCheck, ShieldCheck, Clock } from 'lucide-react';
 
 const stats = [
@@ -31,28 +31,29 @@ const stats = [
   },
 ];
 
+// Explicitly typed Framer Motion Variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 100, damping: 20 },
+  },
+};
+
 export default function StatsBanner() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', stiffness: 100, damping: 20 },
-    },
-  };
 
   return (
     <section ref={ref} className="relative py-16 bg-[#C01C5C] overflow-hidden text-white">
@@ -77,7 +78,7 @@ export default function StatsBanner() {
                 className="group relative bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:shadow-2xl hover:shadow-black/10 flex flex-col items-center text-center"
               >
                 {/* Icon Container */}
-                <div className="h-12 w-12 rounded-2xl bg-white/15 border border-white/20 text-white flex items-center justify-center mb-4 transition-transform group-hover:scale-110 group-hover:bg-white text-[#C01C5C]">
+                <div className="h-12 w-12 rounded-2xl bg-white/15 border border-white/20 text-white flex items-center justify-center mb-4 transition-transform group-hover:scale-110 group-hover:bg-white">
                   <Icon className="w-6 h-6 text-white group-hover:text-[#C01C5C] transition-colors" />
                 </div>
 

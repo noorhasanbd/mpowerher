@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import { 
   Sparkles, 
   ArrowRight, 
@@ -12,6 +12,27 @@ import {
   CheckCircle2, 
   Users 
 } from 'lucide-react';
+
+// Explicitly typed Framer Motion Variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 90, damping: 18 },
+  },
+};
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -27,27 +48,6 @@ export default function HeroSection() {
   const opacityContent = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const cardScale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
   const cardRotate = useTransform(scrollYProgress, [0, 1], [0, -4]);
-
-  // Animation variants for staggered entrance
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { type: 'spring', stiffness: 90, damping: 18 },
-    },
-  };
 
   return (
     <section
@@ -86,7 +86,7 @@ export default function HeroSection() {
         >
           {/* Badge */}
           <motion.div variants={itemVariants} className="inline-block">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-pink-200/80 text-[#C01C5C] font-heading font-semibold text-xs tracking-wider uppercase shadow-sm">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-pink-200/80 text-[#C01C5C] font-heading font-semibold text-xs tracking-wider uppercase shadow-xs">
               <Sparkles className="w-3.5 h-3.5 animate-pulse" />
               <span>Dignity Through Education</span>
             </div>
@@ -133,7 +133,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href="/about"
+              href="/who-we-are/about-us"
               className="btn btn-ghost font-heading text-gray-700 hover:text-[#C01C5C] hover:bg-pink-50/80 rounded-2xl px-7 h-14 text-base font-semibold w-full sm:w-auto transition-colors"
             >
               Learn Our Mission
