@@ -35,9 +35,9 @@ export default function RootLayout({
     >
       {/* Set default body font to Manrope */}
       <body className="font-sans min-h-full flex flex-col bg-base-100 text-base-content">
-        <Navbar/>
+        
         {children}
-        <Footer/>
+        
       </body>
     </html>
   );
