@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart,
@@ -13,20 +14,57 @@ import {
   Lock,
   Mail,
   Sparkles,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
+import { signIn } from '@/lib/auth-client'; // Adjust path if auth-client is elsewhere
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError(null);
+    setLoading(true);
+
+    try {
+      // Call Better Auth client sign-in method
+      const { data, error: signInError } = await signIn.email({
+        email: formData.email,
+        password: formData.password,
+        dontRememberMe: !formData.rememberMe,
+      });
+
+      if (signInError) {
+        setError(signInError.message || 'Invalid email or password.');
+        setLoading(false);
+        return;
+      }
+
+      // Success UI state
+      setSubmitted(true);
+
+      // Redirect to home or dashboard after 1.5s
+      setTimeout(() => {
+        router.push('/');
+        router.refresh();
+      }, 1500);
+
+    } catch (err: any) {
+      setError(err?.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,12 +147,6 @@ export default function LoginPage() {
                 <p className="text-slate-600 max-w-sm mx-auto text-sm leading-relaxed">
                   Redirecting you to your learning dashboard...
                 </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="mt-4 px-6 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-colors"
-                >
-                  Back to Login
-                </button>
               </motion.div>
             ) : (
               <motion.form
@@ -133,6 +165,14 @@ export default function LoginPage() {
                     Enter your credentials below to access your learning modules.
                   </p>
                 </div>
+
+                {/* Error Banner */}
+                {error && (
+                  <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{error}</span>
+                  </div>
+                )}
 
                 {/* Email Address */}
                 <div>
@@ -160,12 +200,12 @@ export default function LoginPage() {
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                       Password *
                     </label>
-                    <a
-                      href="#"
+                    <Link
+                      href="/forgot-password"
                       className="text-xs font-semibold text-[#C01C5C] hover:underline"
                     >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
                   <div className="relative">
                     <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -202,7 +242,7 @@ export default function LoginPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, rememberMe: e.target.checked })
                     }
-                    className="h-4 w-4 rounded border-slate-300 text-[#C01C5C] focus:ring-pink-200"
+                    className="h-4 w-4 rounded border-slate-300 text-[#C01C5C] focus:ring-pink-200 cursor-pointer"
                   />
                   <label
                     htmlFor="rememberMe"
@@ -215,10 +255,20 @@ export default function LoginPage() {
                 {/* Submit CTA */}
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-[#C01C5C] hover:bg-[#a0164c] text-white font-bold text-sm shadow-md shadow-pink-200/80 transition-all flex items-center justify-center gap-2 transform active:scale-[0.99]"
+                  disabled={loading}
+                  className="w-full py-3.5 rounded-xl bg-[#C01C5C] hover:bg-[#a0164c] text-white font-bold text-sm shadow-md shadow-pink-200/80 transition-all flex items-center justify-center gap-2 transform active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span>Sign In</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Signing In...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Sign In</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
 
                 {/* Link to Register */}

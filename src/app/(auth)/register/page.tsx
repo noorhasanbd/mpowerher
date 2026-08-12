@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart,
@@ -15,11 +16,18 @@ import {
   User,
   Sparkles,
   BookOpen,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
+import { signUp } from '@/lib/auth-client'; // Adjust path if auth-client is elsewhere
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -28,9 +36,40 @@ export default function RegisterPage() {
     agreeTerms: false,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError(null);
+
+    if (!formData.agreeTerms) {
+      setError('You must agree to the terms of service.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Call Better Auth client sign-up method
+      const { data, error: signUpError } = await signUp.email({
+        email: formData.email,
+        password: formData.password,
+        name: formData.fullName,
+        // Passes custom role to your database / user record
+        role: formData.role, 
+      });
+
+      if (signUpError) {
+        setError(signUpError.message || 'Failed to create account.');
+        setLoading(false);
+        return;
+      }
+
+      // Success
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err?.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -114,7 +153,7 @@ export default function RegisterPage() {
                   Welcome to MPOWERHER! You now have full access to interactive health modules.
                 </p>
                 <Link
-                  href="/auth/login"
+                  href="/login"
                   className="inline-block mt-4 px-6 py-2.5 rounded-xl bg-[#C01C5C] text-white font-bold text-sm shadow-md hover:bg-[#a0164c] transition-colors"
                 >
                   Proceed to Login
@@ -137,6 +176,14 @@ export default function RegisterPage() {
                     Join thousands of learners in a supportive, judgment-free space.
                   </p>
                 </div>
+
+                {/* Error Box */}
+                {error && (
+                  <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{error}</span>
+                  </div>
+                )}
 
                 {/* Role Selector */}
                 <div className="grid grid-cols-2 gap-3 pt-1">
@@ -285,10 +332,20 @@ export default function RegisterPage() {
                 {/* Submit CTA */}
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-[#C01C5C] hover:bg-[#a0164c] text-white font-bold text-sm shadow-md shadow-pink-200/80 transition-all flex items-center justify-center gap-2 transform active:scale-[0.99]"
+                  disabled={loading}
+                  className="w-full py-3.5 rounded-xl bg-[#C01C5C] hover:bg-[#a0164c] text-white font-bold text-sm shadow-md shadow-pink-200/80 transition-all flex items-center justify-center gap-2 transform active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span>Create Free Account</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Creating Account...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Create Free Account</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
 
                 {/* Link to Login */}

@@ -2,11 +2,17 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Menu, ChevronDown } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Menu, ChevronDown, User, LogOut, LayoutDashboard, Settings } from 'lucide-react';
+import { useSession, signOut } from '@/lib/auth-client'; // Adjust path if auth-client is elsewhere
+import Spinner from '../ui/Spinner';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Better Auth Session Hook
+  const { data: session, isPending } = useSession();
 
   // Helper function to check if a parent menu or child link is active
   const isLinkActive = (href: string) => pathname === href;
@@ -23,6 +29,27 @@ export default function Navbar() {
     { name: 'Our Work', href: '/what-we-do/our-work' },
     { name: 'Our Impact', href: '/what-we-do/our-impact' },
   ];
+
+  // Derive User Avatar URL or construct default image URL
+  const userName = session?.user?.name || 'User';
+  const defaultAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    userName
+  )}&background=C01C5C&color=ffffff&bold=true`;
+
+  const userAvatarSrc = session?.user?.image && session.user.image.trim() !== ''
+    ? session.user.image
+    : defaultAvatarUrl;
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push('/login');
+          router.refresh();
+        },
+      },
+    });
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-pink-100 transition-all">
@@ -95,16 +122,34 @@ export default function Navbar() {
 
               <div className="divider my-1"></div>
 
-              <li>
-                <Link href="/login" className="font-heading font-medium text-slate-700 hover:text-[#C01C5C]">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link href="/register" className="font-heading font-bold text-[#C01C5C]">
-                  Register
-                </Link>
-              </li>
+              {/* Mobile Auth Links */}
+              {!session?.user ? (
+                <>
+                  <li>
+                    <Link href="/login" className="font-heading font-medium text-slate-700 hover:text-[#C01C5C]">
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/register" className="font-heading font-bold text-[#C01C5C]">
+                      Register
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link href="/dashboard" className="font-heading font-medium text-slate-700">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <button onClick={handleSignOut} className="font-heading font-bold text-rose-600">
+                      Sign Out
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -208,20 +253,89 @@ export default function Navbar() {
 
         </nav>
 
-        {/* 3. RIGHT: Auth Buttons */}
+        {/* 3. RIGHT: Auth Actions & User Profile */}
         <div className="flex items-center gap-3">
-          <Link
-            href="/login"
-            className="btn btn-ghost font-heading font-semibold text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50 rounded-xl px-5 border-none hidden sm:inline-flex"
-          >
-            Login
-          </Link>
-          <Link
-            href="/register"
-            className="btn font-heading font-semibold bg-[#C01C5C] hover:bg-[#a0164c] text-white rounded-xl px-6 border-none shadow-sm shadow-pink-200"
-          >
-            Register
-          </Link>
+          {isPending ? (
+            /* Skeleton Loading Pulse */
+            <div className="flex items-center gap-2 text-xs text-slate-500 font-medium px-3 py-1.5 rounded-xl bg-pink-50/50">
+              <Spinner size="sm" />
+              <span>Verifying...</span>
+            </div>
+          ) : session?.user ? (
+            /* Authenticated User Menu */
+            <div className="relative group">
+              <button className="flex items-center gap-2 p-1 rounded-full border-2 border-pink-200 hover:border-[#C01C5C] transition-all bg-white">
+                <div className="relative w-9 h-9 rounded-full overflow-hidden">
+                  <Image
+                    src={userAvatarSrc}
+                    alt={userName}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              </button>
+
+              {/* User Dropdown Box */}
+              <div className="absolute top-full right-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out z-50">
+                <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
+                  
+                  {/* User Profile Header */}
+                  <div className="px-3 py-2 border-b border-slate-100">
+                    <p className="text-xs font-bold text-slate-900 truncate">
+                      {session.user.name}
+                    </p>
+                    <p className="text-[11px] text-slate-500 truncate">
+                      {session.user.email}
+                    </p>
+                  </div>
+
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50/60 rounded-xl transition-colors"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Dashboard</span>
+                  </Link>
+
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50/60 rounded-xl transition-colors"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>Profile Settings</span>
+                  </Link>
+
+                  <div className="border-t border-slate-100 my-1"></div>
+
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors text-left"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out</span>
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Unauthenticated Visitor CTA Buttons */
+            <>
+              <Link
+                href="/login"
+                className="btn btn-ghost font-heading font-semibold text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50 rounded-xl px-5 border-none hidden sm:inline-flex"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="btn font-heading font-semibold bg-[#C01C5C] hover:bg-[#a0164c] text-white rounded-xl px-6 border-none shadow-sm shadow-pink-200"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
       </div>
