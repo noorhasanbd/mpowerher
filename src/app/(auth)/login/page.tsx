@@ -42,7 +42,7 @@ export default function LoginPage() {
       const { data, error: signInError } = await signIn.email({
         email: formData.email,
         password: formData.password,
-        dontRememberMe: !formData.rememberMe,
+        rememberMe: formData.rememberMe
       });
 
       if (signInError) {
