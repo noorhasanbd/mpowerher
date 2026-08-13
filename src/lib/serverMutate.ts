@@ -40,8 +40,19 @@ export async function serverMutate<T = any>({
       .map((c) => `${c.name}=${c.value}`)
       .join("; ");
 
-    // Extract better-auth session token specifically for Bearer header backup
-    const sessionToken = cookieStore.get("better-auth.session_token")?.value;
+    // 3. Robust Session Token Retrieval (Handles HTTPS prefixes + local HTTP)
+    const sessionCookie = 
+      cookieStore.get("__Secure-better-auth.session_token") ||
+      cookieStore.get("__Host-better-auth.session_token") ||
+      cookieStore.get("better-auth.session_token") ||
+      cookieStore.get("session_token");
+
+    let sessionToken = sessionCookie?.value;
+
+    // Optional: If token is signed (TOKEN.SIGNATURE), strip signature for Prisma
+    if (sessionToken && sessionToken.includes(".")) {
+      sessionToken = sessionToken.split(".")[0];
+    }
 
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -56,12 +67,12 @@ export async function serverMutate<T = any>({
       cache: method === "GET" ? "no-store" : "default",
     };
 
-    // 3. Prevent structural body inclusions on GET/DELETE without body
+    // 4. Prevent structural body inclusions on GET/DELETE without body
     if (method !== "GET" && body !== undefined && body !== null) {
       fetchOptions.body = JSON.stringify(body);
     }
 
-    // 4. Clean up trailing/leading slash compilation errors automatically
+    // 5. Clean up trailing/leading slash compilation errors automatically
     const baseClean = EXPRESS_API_URL.replace(/\/$/, "");
     const pathClean = path.replace(/^\//, "");
     const targetUrl = `${baseClean}/${pathClean}`;
@@ -72,23 +83,22 @@ export async function serverMutate<T = any>({
     if (!response.ok) {
       throw new Error(
         result.error ||
+          result.message ||
           `Request failed with status ${response.status}: ${response.statusText}`,
       );
     }
 
-    // 5. Revalidate Next.js cache if URL is provided
+    // 6. Revalidate Next.js cache if URL is provided
     if (revalidatePathUrl) {
       revalidatePath(revalidatePathUrl, revalidateType);
     }
 
     return {
       success: true as const,
-      // Envelope Fallback: works whether Express wraps payloads in .data or returns it directly
       data: (result.data !== undefined ? result.data : result) as T,
       message: result.message as string | undefined,
     };
   } catch (error: any) {
-    // 6. Detailed logging for Vercel Server Logs dashboard
     console.error(
       `[serverMutate Failure] ${method} to ${path}:`,
       error.message,
