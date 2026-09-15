@@ -36,7 +36,9 @@ export default function Sidebar({ userRole: propRole }: SidebarProps) {
 
   // Fetch real-time user session from Better-Auth
   const { data: session, isPending } = authClient.useSession();
-  const user = session?.user as (typeof session)['user'] & { role?: UserRole };
+ const user = session?.user as
+    | (NonNullable<typeof session>['user'] & { role?: UserRole })
+    | undefined;
 
   // Resolve role: Session role takes priority -> Prop fallback -> 'student' default
   const activeRole: UserRole =

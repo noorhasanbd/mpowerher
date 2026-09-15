@@ -23,171 +23,180 @@ type TeamRole =
   | "Social Media"
   | "Fundraising";
 
+type TeamRoleKey =
+  | "lessonDevelopment"
+  | "outreach"
+  | "translation"
+  | "founder"
+  | "socialMedia"
+  | "fundraising";
+
 type TeamMember = {
   id: string;
-  name: string;
+  translationKey: string;
   role: TeamRole;
-  bio: string;
+  roleKey: TeamRoleKey;
   image?: string;
 };
 
 const teamMembers: TeamMember[] = [
   {
     id: "aparna-prasad",
-    name: "Aparna Prasad",
+    translationKey: "aparnaPrasad",
     role: "Lesson Development",
+    roleKey: "lessonDevelopment",
     image: "/team/aparna-prasad.webp",
-    bio: "I joined MPowerHer to channel my enthusiasm for health and education toward striving for a world where all girls feel positive and confident about themselves.",
   },
   {
     id: "rachel-dsouza",
-    name: "Rachel Dsouza",
+    translationKey: "rachelDsouza",
     role: "Lesson Development",
+    roleKey: "lessonDevelopment",
     image: "/team/rachel-dsouza.webp",
-    bio: "MpowerHer felt like an amazing opportunity to help others, especially girls like me. Being a part of this organization allowed me to contribute to its impact, and uplift women on an international scale!",
   },
   {
     id: "kaho-suzuki",
-    name: "Kaho Suzuki",
+    translationKey: "kahoSuzuki",
     role: "Lesson Development",
+    roleKey: "lessonDevelopment",
     image: "/team/kaho-suzuki.webp",
-    bio: "I wanted to help with MpowerHer because I wanted to help create engaging health lessons that make important information accessible and easy to understand.",
   },
   {
     id: "laila-ghoneim",
-    name: "Laila Ghoneim",
+    translationKey: "lailaGhoneim",
     role: "Lesson Development",
+    roleKey: "lessonDevelopment",
     image: "/team/laila-ghoneim.webp",
-    bio: "I joined MpowerHer because I’m passionate about education and wanted to help girls learn more about their health and well-being.",
   },
   {
     id: "meera-arun",
-    name: "Meera Arun",
+    translationKey: "meeraArun",
     role: "Outreach",
+    roleKey: "outreach",
     image: "/team/meera-arun.webp",
-    bio: "Mpowerher drew me in because I wanted to connect with others and help spread awareness about menstrual health and period poverty.",
   },
   {
     id: "inarah-rahman",
-    name: "Inarah Rahman",
+    translationKey: "inarahRahman",
     role: "Outreach",
+    roleKey: "outreach",
     image: "/team/inarah-rahman.webp",
-    bio: "I wanted to join MpowerHer because I wanted to advocate for girls’ health and help bring attention to the challenges of period poverty.",
   },
   {
     id: "areeba-mahbub",
-    name: "Areeba Mahbub",
+    translationKey: "areebaMahbub",
     role: "Translation",
+    roleKey: "translation",
     image: "/team/areeba-mahbub.webp",
-    bio: "I’m helping out with MpowerHer because I wanted to make important health information accessible to girls across different languages and communities.",
   },
   {
     id: "rifaya-faial",
-    name: "Rifaya Faial",
+    translationKey: "rifayaFaial",
     role: "Translation",
+    roleKey: "translation",
     image: "/team/rifaya-faial.webp",
-    bio: "I joined MpowerHer to help break down language barriers and make menstrual health education more accessible.",
   },
   {
     id: "simrah-ahmed",
-    name: "Simrah Ahmed",
+    translationKey: "simrahAhmed",
     role: "Translation",
+    roleKey: "translation",
     image: "/team/simrah-ahmed.webp",
-    bio: "Mpowerher is so great because I believe everyone deserves access to information about their health in a language they can understand and this program does just that",
   },
   {
     id: "zaina-khan",
-    name: "Zaina Khan",
+    translationKey: "zainaKhan",
     role: "Founder",
+    roleKey: "founder",
     image: "/team/zaina-khan.webp",
-    bio: "I founded MpowerHer because I wanted to help combat period poverty and make menstrual health education and resources more accessible to girls who need them.",
   },
   {
     id: "namira-nadeem",
-    name: "Namira Nadeem",
+    translationKey: "namiraNadeem",
     role: "Social Media",
+    roleKey: "socialMedia",
     image: "/team/namira-nadeem.webp",
-    bio: "I joined MpowerHer because I wanted to use social media to educate others and raise awareness about menstrual health.",
   },
   {
     id: "zoe-bruce",
-    name: "Zoë Bruce",
+    translationKey: "zoeBruce",
     role: "Social Media",
+    roleKey: "socialMedia",
     image: "/team/zo-bruce.webp",
-    bio: "I joined MpowerHer because I wanted to use my creativity to advocate for women’s health and help spread awareness about period poverty.",
   },
   {
     id: "deesha-roopesh",
-    name: "Deesha Roopesh",
+    translationKey: "deeshaRoopesh",
     role: "Fundraising",
+    roleKey: "fundraising",
     image: "/team/deesha-roopesh.webp",
-    bio: "I joined MpowerHer because I wanted to help combat period poverty and raise the resources needed to make a real difference",
   },
   {
     id: "lili-perkins",
-    name: "Lili Perkins",
+    translationKey: "liliPerkins",
     role: "Fundraising",
+    roleKey: "fundraising",
     image: "/team/lili-perkins.webp",
-    bio: "I joined MpowerHer because I wanted to contribute to a cause I care about and help provide girls with the resources they deserve.",
   },
   {
     id: "rethika-sathymathen",
-    name: "Rethika Sathymathen",
+    translationKey: "rethikaSathymathen",
     role: "Fundraising",
+    roleKey: "fundraising",
     image: "/team/rethika-sathymathen.webp",
-    bio: "I joined MpowerHer because I believe period poverty should never keep a girl from learning, participating, or feeling confident in her daily life.",
   },
   {
     id: "aida-karim",
-    name: "Aida Karim",
+    translationKey: "aidaKarim",
     role: "Outreach",
+    roleKey: "outreach",
     image: "/team/aida-karim.webp",
-    bio: "I joined MpowerHer because I wanted to support girls in underserved communities and help make conversations about menstrual health more accessible.",
   },
   {
     id: "norah-chowdhury",
-    name: "Norah Chowdhury",
+    translationKey: "norahChowdhury",
     role: "Social Media",
+    roleKey: "socialMedia",
     image: "/team/norah-chowdhury.webp",
-    bio: "I joined MpowerHer because I wanted to create meaningful content that helps people understand and care about menstrual health.",
   },
   {
     id: "hafsah-khaja",
-    name: "Hafsah Khaja",
+    translationKey: "hafsahKhaja",
     role: "Outreach",
+    roleKey: "outreach",
     image: "/team/hafsah-khaja.webp",
-    bio: "I joined MpowerHer because I wanted to connect people with important resources and advocate for better health education for girls.",
   },
   {
     id: "navya-pasumarthi",
-    name: "Navya Pasumarthi",
+    translationKey: "navyaPasumarthi",
     role: "Social Media",
+    roleKey: "socialMedia",
     image: "/team/navya-pasumarthi.webp",
-    bio: "I joined MpowerHer because I wanted to use social media to educate, inspire, and bring more attention to menstrual health and period equity.",
   },
   {
     id: "krupa-kuber",
-    name: "Krupa Kuber",
+    translationKey: "krupaKuber",
     role: "Fundraising",
+    roleKey: "fundraising",
     image: "/public",
-    bio: "I joined MpowerHer because I wanted to turn my passion for this cause into action by helping raise funds for menstrual products and health resources.",
   },
   {
     id: "tasheen-kashem",
-    name: "Tasheen Kashem",
+    translationKey: "tasheenKashem",
     role: "Fundraising",
-    bio: "I joined MpowerHer because I wanted to help raise both awareness and funds to improve access to menstrual health resources.",
+    roleKey: "fundraising",
+    image: "/team/tasheen-kashem.webp",
   },
 ];
 
-const roles: Array<"All" | TeamRole> = [
-  "All",
-  "Lesson Development",
-  "Outreach",
-  "Translation",
-  "Social Media",
-  "Fundraising",
-  "Founder",
+const rolesFilter: Array<{ labelKey: string; value: "All" | TeamRole }> = [
+  { labelKey: "filters.all", value: "All" },
+  { labelKey: "filters.lessonDevelopment", value: "Lesson Development" },
+  { labelKey: "filters.outreach", value: "Outreach" },
+  { labelKey: "filters.translation", value: "Translation" },
+  { labelKey: "filters.socialMedia", value: "Social Media" },
+  { labelKey: "filters.fundraising", value: "Fundraising" },
+  { labelKey: "filters.founder", value: "Founder" },
 ];
 
 const roleIcons: Record<TeamRole, typeof Heart> = {
@@ -221,14 +230,13 @@ const cardVariants = {
       ease: [0.22, 1, 0.36, 1],
     },
   },
-};
+} as const;
 
 export default function AboutPage() {
   const t = useTranslations("aboutUs");
 
   const [activeRole, setActiveRole] = useState<"All" | TeamRole>("All");
-  const [selectedMember, setSelectedMember] =
-    useState<TeamMember | null>(null);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [search, setSearch] = useState("");
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
@@ -236,18 +244,21 @@ export default function AboutPage() {
     const query = search.trim().toLowerCase();
 
     return teamMembers.filter((member) => {
-      const matchesRole =
-        activeRole === "All" || member.role === activeRole;
+      const matchesRole = activeRole === "All" || member.role === activeRole;
+
+      const name = t(`members.${member.translationKey}.name`);
+      const bio = t(`members.${member.translationKey}.bio`);
+      const translatedRole = t(`roles.${member.roleKey}`);
 
       const matchesSearch =
         !query ||
-        member.name.toLowerCase().includes(query) ||
-        member.role.toLowerCase().includes(query) ||
-        member.bio.toLowerCase().includes(query);
+        name.toLowerCase().includes(query) ||
+        translatedRole.toLowerCase().includes(query) ||
+        bio.toLowerCase().includes(query);
 
       return matchesRole && matchesSearch;
     });
-  }, [activeRole, search]);
+  }, [activeRole, search, t]);
 
   useEffect(() => {
     document.body.style.overflow = selectedMember ? "hidden" : "";
@@ -308,45 +319,49 @@ export default function AboutPage() {
             <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-pink-100/70 blur-3xl" />
 
             <div className="relative grid grid-cols-5 items-center gap-3 sm:gap-5">
-              {teamMembers.slice(0, 10).map((member, index) => (
-                <motion.button
-                  key={member.id}
-                  type="button"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 * index }}
-                  whileHover={{ y: -7, scale: 1.05 }}
-                  onClick={() => setSelectedMember(member)}
-                  className="group relative aspect-square overflow-hidden rounded-2xl border border-white bg-pink-50 shadow-md"
-                  aria-label={`View ${member.name}`}
-                >
-                  {member.image && !imageErrors[member.id] ? (
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      sizes="(max-width: 640px) 20vw, 120px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      onError={() =>
-                        setImageErrors((prev) => ({
-                          ...prev,
-                          [member.id]: true,
-                        }))
-                      }
-                    />
-                  ) : (
-                    <Image
-                      src="/team/avatar-fallback.svg"
-                      alt={member.name}
-                      fill
-                      sizes="120px"
-                      className="object-cover"
-                    />
-                  )}
+              {teamMembers.slice(0, 10).map((member, index) => {
+                const memberName = t(`members.${member.translationKey}.name`);
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#C01C5C]/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-                </motion.button>
-              ))}
+                return (
+                  <motion.button
+                    key={member.id}
+                    type="button"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.08 * index }}
+                    whileHover={{ y: -7, scale: 1.05 }}
+                    onClick={() => setSelectedMember(member)}
+                    className="group relative aspect-square overflow-hidden rounded-2xl border border-white bg-pink-50 shadow-md"
+                    aria-label={`View ${memberName}`}
+                  >
+                    {member.image && !imageErrors[member.id] ? (
+                      <Image
+                        src={member.image}
+                        alt={memberName}
+                        fill
+                        sizes="(max-width: 640px) 20vw, 120px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        onError={() =>
+                          setImageErrors((prev) => ({
+                            ...prev,
+                            [member.id]: true,
+                          }))
+                        }
+                      />
+                    ) : (
+                      <Image
+                        src="/team/avatar-fallback.svg"
+                        alt={memberName}
+                        fill
+                        sizes="120px"
+                        className="object-cover"
+                      />
+                    )}
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#C01C5C]/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                  </motion.button>
+                );
+              })}
             </div>
           </motion.div>
         </div>
@@ -392,21 +407,21 @@ export default function AboutPage() {
 
           {/* FILTERS */}
           <div className="mb-10 flex gap-2 overflow-x-auto pb-2">
-            {roles.map((role) => {
-              const active = activeRole === role;
+            {rolesFilter.map((filter) => {
+              const active = activeRole === filter.value;
 
               return (
                 <button
-                  key={role}
+                  key={filter.value}
                   type="button"
-                  onClick={() => setActiveRole(role)}
+                  onClick={() => setActiveRole(filter.value)}
                   className={`whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition ${
                     active
                       ? "border-[#C01C5C] bg-[#C01C5C] text-white shadow-md"
                       : "border-pink-200 bg-white text-slate-600 hover:border-[#C01C5C] hover:text-[#C01C5C]"
                   }`}
                 >
-                  {role === "All" ? t("filters.all") : role}
+                  {t(filter.labelKey)}
                 </button>
               );
             })}
@@ -423,6 +438,9 @@ export default function AboutPage() {
             >
               {filteredMembers.map((member) => {
                 const RoleIcon = roleIcons[member.role];
+                const memberName = t(`members.${member.translationKey}.name`);
+                const memberBio = t(`members.${member.translationKey}.bio`);
+                const memberRole = t(`roles.${member.roleKey}`);
 
                 return (
                   <motion.article
@@ -441,7 +459,7 @@ export default function AboutPage() {
                       {member.image && !imageErrors[member.id] ? (
                         <Image
                           src={member.image}
-                          alt={member.name}
+                          alt={memberName}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -455,7 +473,7 @@ export default function AboutPage() {
                       ) : (
                         <Image
                           src="/team/avatar-fallback.svg"
-                          alt={member.name}
+                          alt={memberName}
                           fill
                           sizes="400px"
                           className="object-cover"
@@ -467,7 +485,7 @@ export default function AboutPage() {
                       <div className="absolute bottom-4 left-4 right-4">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#C01C5C] backdrop-blur">
                           <RoleIcon className="h-3.5 w-3.5" />
-                          {member.role}
+                          {memberRole}
                         </span>
                       </div>
                     </button>
@@ -475,11 +493,11 @@ export default function AboutPage() {
                     {/* CONTENT */}
                     <div className="p-5">
                       <h3 className="font-heading text-xl font-bold text-slate-900">
-                        {member.name}
+                        {memberName}
                       </h3>
 
                       <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-500">
-                        {member.bio}
+                        {memberBio}
                       </p>
 
                       <button
@@ -574,7 +592,7 @@ export default function AboutPage() {
                   {selectedMember.image && !imageErrors[selectedMember.id] ? (
                     <Image
                       src={selectedMember.image}
-                      alt={selectedMember.name}
+                      alt={t(`members.${selectedMember.translationKey}.name`)}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover"
@@ -582,7 +600,7 @@ export default function AboutPage() {
                   ) : (
                     <Image
                       src="/team/avatar-fallback.svg"
-                      alt={selectedMember.name}
+                      alt={t(`members.${selectedMember.translationKey}.name`)}
                       fill
                       sizes="500px"
                       className="object-cover"
@@ -593,7 +611,7 @@ export default function AboutPage() {
 
                   <div className="absolute bottom-6 left-6">
                     <span className="rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-[#C01C5C] backdrop-blur">
-                      {selectedMember.role}
+                      {t(`roles.${selectedMember.roleKey}`)}
                     </span>
                   </div>
                 </div>
@@ -605,7 +623,7 @@ export default function AboutPage() {
                   </p>
 
                   <h2 className="mt-3 font-heading text-3xl font-bold text-slate-900">
-                    {selectedMember.name}
+                    {t(`members.${selectedMember.translationKey}.name`)}
                   </h2>
 
                   <div className="mt-6 h-px bg-pink-100" />
@@ -616,7 +634,7 @@ export default function AboutPage() {
                     </p>
 
                     <blockquote className="mt-3 text-lg leading-8 text-slate-700">
-                      “{selectedMember.bio}”
+                      “{t(`members.${selectedMember.translationKey}.bio`)}”
                     </blockquote>
                   </div>
 
