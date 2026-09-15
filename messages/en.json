@@ -1,0 +1,164 @@
+{
+  "HomePage": {
+    "title": "Welcome to our website",
+    "description": "This is a Next.js application translated into Bangla and English."
+  },
+  "Navigation": {
+    "home": "Home",
+    "whoWeAre": "Who We Are",
+    "aboutUs": "About Us",
+    "ourTeam": "Our Team",
+    "resources": "Resources",
+    "volunteer": "Volunteer with Us",
+    "whatWeDo": "What We Do",
+    "ourWork": "Our Work",
+    "ourImpact": "Our Impact",
+    "language": "Language",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "profileSettings": "Profile Settings",
+    "signOut": "Sign Out"
+  },
+  "aboutUs": {
+    "eyebrow": "The people behind MPowerHer",
+    "title": "Meet the team empowering change",
+    "subtitle": "Behind MPowerHer is a passionate team working across education, outreach, translation, social media, and fundraising to make menstrual health information and resources more accessible.",
+    "teamEyebrow": "Our Team",
+    "teamTitle": "People with a purpose",
+    "teamDescription": "Every member brings a different perspective, skill, and reason for being part of MPowerHer. Explore their stories and the motivation behind their work.",
+    "searchPlaceholder": "Search team members...",
+    "readStory": "Read their story",
+    "memberStory": "Member story",
+    "whyMpowerHer": "Why I joined MPowerHer",
+    "close": "Close",
+    "noResults": "No team members found",
+    "noResultsDescription": "Try changing your search or selecting another team category.",
+    "closingTitle": "Different roles. One shared purpose.",
+    "closingDescription": "Together, the MPowerHer team is working to make menstrual health education, awareness, and resources more accessible.",
+    "filters": {
+      "all": "All",
+      "lessonDevelopment": "Lesson Development",
+      "outreach": "Outreach",
+      "translation": "Translation",
+      "socialMedia": "Social Media",
+      "fundraising": "Fundraising",
+      "founder": "Founder"
+    },
+    "roles": {
+      "lessonDevelopment": "Lesson Development",
+      "outreach": "Outreach",
+      "translation": "Translation",
+      "socialMedia": "Social Media",
+      "fundraising": "Fundraising",
+      "founder": "Founder"
+    },
+    "members": {
+      "aparnaPrasad": {
+        "name": "Aparna Prasad",
+        "role": "Lesson Development",
+        "bio": "I joined MPowerHer to channel my enthusiasm for health and education toward striving for a world where all girls feel positive and confident about themselves."
+      },
+      "rachelDsouza": {
+        "name": "Rachel Dsouza",
+        "role": "Lesson Development",
+        "bio": "MpowerHer felt like an amazing opportunity to help others, especially girls like me. Being a part of this organization allowed me to contribute to its impact, and uplift women on an international scale!"
+      },
+      "kahoSuzuki": {
+        "name": "Kaho Suzuki",
+        "role": "Lesson Development",
+        "bio": "I wanted to help with MpowerHer because I wanted to help create engaging health lessons that make important information accessible and easy to understand."
+      },
+      "lailaGhoneim": {
+        "name": "Laila Ghoneim",
+        "role": "Lesson Development",
+        "bio": "I joined MpowerHer because I'm passionate about education and wanted to help girls learn more about their health and well-being."
+      },
+      "meeraArun": {
+        "name": "Meera Arun",
+        "role": "Outreach",
+        "bio": "Mpowerher drew me in because I wanted to connect with others and help spread awareness about menstrual health and period poverty."
+      },
+      "inarahRahman": {
+        "name": "Inarah Rahman",
+        "role": "Outreach",
+        "bio": "I wanted to join MpowerHer because I wanted to advocate for girls' health and help bring attention to the challenges of period poverty."
+      },
+      "areebaMahbub": {
+        "name": "Areeba Mahbub",
+        "role": "Translation",
+        "bio": "I'm helping out with MpowerHer because I wanted to make important health information accessible to girls across different languages and communities."
+      },
+      "rifayaFaial": {
+        "name": "Rifaya Faial",
+        "role": "Translation",
+        "bio": "I joined MpowerHer to help break down language barriers and make menstrual health education more accessible."
+      },
+      "simrahAhmed": {
+        "name": "Simrah Ahmed",
+        "role": "Translation",
+        "bio": "Mpowerher is so great because I believe everyone deserves access to information about their health in a language they can understand and this program does just that."
+      },
+      "zainaKhan": {
+        "name": "Zaina Khan",
+        "role": "Founder",
+        "bio": "I founded MpowerHer because I wanted to help combat period poverty and make menstrual health education and resources more accessible to girls who need them."
+      },
+      "namiraNadeem": {
+        "name": "Namira Nadeem",
+        "role": "Social Media",
+        "bio": "I joined MpowerHer because I wanted to use social media to educate others and raise awareness about menstrual health."
+      },
+      "zoeBruce": {
+        "name": "Zoë Bruce",
+        "role": "Social Media",
+        "bio": "I joined MpowerHer because I wanted to use my creativity to advocate for women's health and help spread awareness about period poverty."
+      },
+      "deeshaRoopesh": {
+        "name": "Deesha Roopesh",
+        "role": "Fundraising",
+        "bio": "I joined MpowerHer because I wanted to help combat period poverty and raise the resources needed to make a real difference."
+      },
+      "liliPerkins": {
+        "name": "Lili Perkins",
+        "role": "Fundraising",
+        "bio": "I joined MpowerHer because I wanted to contribute to a cause I care about and help provide girls with the resources they deserve."
+      },
+      "rethikaSathymathen": {
+        "name": "Rethika Sathymathen",
+        "role": "Fundraising",
+        "bio": "I joined MpowerHer because I believe period poverty should never keep a girl from learning, participating, or feeling confident in her daily life."
+      },
+      "aidaKarim": {
+        "name": "Aida Karim",
+        "role": "Outreach",
+        "bio": "I joined MpowerHer because I wanted to support girls in underserved communities and help make conversations about menstrual health more accessible."
+      },
+      "norahChowdhury": {
+        "name": "Norah Chowdhury",
+        "role": "Social Media",
+        "bio": "I joined MpowerHer because I wanted to create meaningful content that helps people understand and care about menstrual health."
+      },
+      "hafsahKhaja": {
+        "name": "Hafsah Khaja",
+        "role": "Outreach",
+        "bio": "I joined MpowerHer because I wanted to connect people with important resources and advocate for better health education for girls."
+      },
+      "navyaPasumarthi": {
+        "name": "Navya Pasumarthi",
+        "role": "Social Media",
+        "bio": "I joined MpowerHer because I wanted to use social media to educate, inspire, and bring more attention to menstrual health and period equity."
+      },
+      "krupaKuber": {
+        "name": "Krupa Kuber",
+        "role": "Fundraising",
+        "bio": "I joined MpowerHer because I wanted to turn my passion for this cause into action by helping raise funds for menstrual products and health resources."
+      },
+      "tasheenKashem": {
+        "name": "Tasheen Kashem",
+        "role": "Fundraising",
+        "bio": "I joined MpowerHer because I wanted to help raise both awareness and funds to improve access to menstrual health resources."
+      }
+    }
+  }
+}

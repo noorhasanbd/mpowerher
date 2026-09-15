@@ -1,85 +1,93 @@
-// src/proxy.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
 
-// Defined route roles for RBAC checks
+const handleIntl = createIntlMiddleware({
+  locales: ['en', 'bn'],
+  defaultLocale: 'en',
+  localeDetection: true,
+});
+
 type UserRole = 'student' | 'educator' | 'admin';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Fetch the Better Auth session token directly from cookies
+  const pathnameWithoutLocale = pathname.replace(/^\/(en|bn)/, '') || '/';
+  const currentLocale = pathname.match(/^\/(en|bn)(\/|$)/)?.[1] || 'en';
+
   const sessionToken =
     request.cookies.get('better-auth.session_token')?.value ||
     request.cookies.get('__Secure-better-auth.session_token')?.value;
 
-  // 2. Define Protected Route Prefix Groups (Included /tracker)
   const isProtectedPath =
-    pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/student') ||
-    pathname.startsWith('/educator') ||
-    pathname.startsWith('/admin') ||
-    pathname.startsWith('/tracker'); // 👈 Added /tracker here
+    pathnameWithoutLocale.startsWith('/dashboard') ||
+    pathnameWithoutLocale.startsWith('/student') ||
+    pathnameWithoutLocale.startsWith('/educator') ||
+    pathnameWithoutLocale.startsWith('/admin') ||
+    pathnameWithoutLocale.startsWith('/tracker');
 
-  const isAuthPath = pathname.startsWith('/login') || pathname.startsWith('/register');
+  const isAuthPath =
+    pathnameWithoutLocale.startsWith('/login') ||
+    pathnameWithoutLocale.startsWith('/register');
 
-  // ---------------------------------------------------------------
-  // CASE A: User is NOT logged in and tries to access protected path
-  // ---------------------------------------------------------------
+  // Updated type to accept string | URL
+  const localizedRedirect = (path: string, url: string | URL) => {
+    return NextResponse.redirect(new URL(`/${currentLocale}${path}`, url));
+  };
+
+  // CASE A: Unauthenticated user accesses protected route
   if (!sessionToken && isProtectedPath) {
-    const loginUrl = new URL('/login', request.url);
+    const loginUrl = new URL(`/${currentLocale}/login`, request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // ---------------------------------------------------------------
-  // CASE B: User IS logged in and tries to access /login or /register
-  // ---------------------------------------------------------------
+  // CASE B: Authenticated user accesses auth route
   if (sessionToken && isAuthPath) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return localizedRedirect('/dashboard', request.url);
   }
 
-  // ---------------------------------------------------------------
-  // CASE C: Role-Based Access Control (RBAC) Guarding
-  // ---------------------------------------------------------------
+  // CASE C: Role-Based Access Control (RBAC)
   if (sessionToken && isProtectedPath) {
     try {
-      const response = await fetch(new URL('/api/auth/get-session', request.url).toString(), {
-        headers: request.headers,
-      });
+      const response = await fetch(
+        new URL('/api/auth/get-session', request.url).toString(),
+        {
+          headers: {
+            cookie: request.headers.get('cookie') || '',
+          },
+        }
+      );
 
       if (response.ok) {
         const sessionData = await response.json();
         const role: UserRole = sessionData?.user?.role || 'student';
 
-        // Admin Route Guard
-        if (pathname.startsWith('/admin') && role !== 'admin') {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
+        if (pathnameWithoutLocale.startsWith('/admin') && role !== 'admin') {
+          return localizedRedirect('/dashboard', request.url);
         }
 
-        // Educator Route Guard
         if (
-          pathname.startsWith('/educator') &&
+          pathnameWithoutLocale.startsWith('/educator') &&
           role !== 'educator' &&
           role !== 'admin'
         ) {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
+          return localizedRedirect('/dashboard', request.url);
         }
 
-        // Student Route Guard
         if (
-          pathname.startsWith('/student') &&
+          pathnameWithoutLocale.startsWith('/student') &&
           !['student', 'educator', 'admin'].includes(role)
         ) {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
+          return localizedRedirect('/dashboard', request.url);
         }
 
-        // Tracker Route Guard (Accessible by all valid logged-in roles)
         if (
-          pathname.startsWith('/tracker') &&
-          !['student', 'educator', 'admin'].includes(role) // 👈 Fixed syntax here
+          pathnameWithoutLocale.startsWith('/tracker') &&
+          !['student', 'educator', 'admin'].includes(role)
         ) {
-          return NextResponse.redirect(new URL('/dashboard', request.url));
+          return localizedRedirect('/dashboard', request.url);
         }
       }
     } catch (error) {
@@ -87,21 +95,9 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // Allow the request to proceed normally
-  return NextResponse.next();
+  return handleIntl(request);
 }
 
-// ---------------------------------------------------------------
-// Matcher Configuration
-// ---------------------------------------------------------------
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/student/:path*',
-    '/educator/:path*',
-    '/admin/:path*',
-    '/tracker/:path*', // 👈 Added /tracker matcher here
-    '/login',
-    '/register',
-  ],
+  matcher: ['/', '/((?!api|_next|_vercel|.*\\..*).*)']
 };

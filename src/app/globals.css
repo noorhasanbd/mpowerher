@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+
+
 @theme {
   --font-sans: var(--font-manrope), system-ui, sans-serif;
   --font-heading: var(--font-poppins), system-ui, sans-serif;
+  --font-bengali: var(--font-noto-sans-bengali), system-ui, sans-serif;
 }

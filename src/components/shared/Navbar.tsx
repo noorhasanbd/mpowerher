@@ -1,46 +1,66 @@
 'use client';
 
-import Link from 'next/link';
+import { useTransition } from 'react';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import { Menu, ChevronDown, User, LogOut, LayoutDashboard, Settings } from 'lucide-react';
-import { useSession, signOut } from '@/lib/auth-client'; // Adjust path if auth-client is elsewhere
+import { Menu, ChevronDown, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { useSession, signOut } from '@/lib/auth-client';
 import Spinner from '../ui/Spinner';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import { useLocale, useTranslations } from 'next-intl';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
 
 export default function Navbar() {
+  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
+  const [isPendingLocale, startTransition] = useTransition();
 
-  // Better Auth Session Hook
+  const tNav = useTranslations('Navigation');
   const { data: session, isPending } = useSession();
 
-  // Helper function to check if a parent menu or child link is active
+  // Helper functions for route active states
   const isLinkActive = (href: string) => pathname === href;
   const isParentActive = (paths: string[]) => paths.some((path) => pathname.startsWith(path));
 
+  // Close DaisyUI mobile dropdown on link click
+  const closeMobileMenu = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  const handleLanguageSwitch = (newLocale: string) => {
+    if (newLocale === locale) return;
+    startTransition(() => {
+      router.replace(pathname, { locale: newLocale });
+    });
+  };
+
   const whoWeAreLinks = [
-    { name: 'About Us', href: '/who-we-are/about-us' },
-    { name: 'Our Team', href: '/who-we-are/our-team' },
-    { name: 'Resources', href: '/who-we-are/resources' },
-    { name: 'Volunteer with Us', href: '/who-we-are/volunteer' },
+    { name: tNav('aboutUs'), href: '/who-we-are/about-us' },
+    { name: tNav('ourTeam'), href: '/who-we-are/our-team' },
+    { name: tNav('resources'), href: '/who-we-are/resources' },
+    { name: tNav('volunteer'), href: '/who-we-are/volunteer' },
   ];
 
   const whatWeDoLinks = [
-    { name: 'Our Work', href: '/what-we-do/our-work' },
-    { name: 'Our Impact', href: '/what-we-do/our-impact' },
+    { name: tNav('ourImpact'), href: '/what-we-do/our-impact' },
+    { name: tNav('ourWork'), href: '/what-we-do/our-work' },
   ];
 
-  // Derive User Avatar URL or construct default image URL
+  // Derive User Avatar URL
   const userName = session?.user?.name || 'User';
   const defaultAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
     userName
   )}&background=C01C5C&color=ffffff&bold=true`;
 
-  const userAvatarSrc = session?.user?.image && session.user.image.trim() !== ''
-    ? session.user.image
-    : defaultAvatarUrl;
+  const userAvatarSrc =
+    session?.user?.image && session.user.image.trim() !== ''
+      ? session.user.image
+      : defaultAvatarUrl;
 
   const handleSignOut = async () => {
+    closeMobileMenu();
     await signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -74,24 +94,26 @@ export default function Navbar() {
               <li>
                 <Link 
                   href="/" 
+                  onClick={closeMobileMenu}
                   className={`font-heading font-medium rounded-xl ${
                     isLinkActive('/') ? 'bg-pink-50 text-[#C01C5C] font-bold' : 'text-slate-700'
                   }`}
                 >
-                  Home
+                  {tNav('home')}
                 </Link>
               </li>
 
               {/* Mobile: Who We Are */}
               <li className="space-y-1">
                 <span className="font-heading font-semibold text-xs uppercase tracking-wider text-slate-400 px-3 py-1">
-                  Who We Are
+                  {tNav('whoWeAre')}
                 </span>
                 <ul className="pl-2 space-y-1">
                   {whoWeAreLinks.map((link) => (
                     <li key={link.href}>
                       <Link 
                         href={link.href}
+                        onClick={closeMobileMenu}
                         className={isLinkActive(link.href) ? 'text-[#C01C5C] font-bold bg-pink-50' : 'text-slate-700'}
                       >
                         {link.name}
@@ -104,13 +126,14 @@ export default function Navbar() {
               {/* Mobile: What We Do */}
               <li className="space-y-1">
                 <span className="font-heading font-semibold text-xs uppercase tracking-wider text-slate-400 px-3 py-1">
-                  What We Do
+                  {tNav('whatWeDo')}
                 </span>
                 <ul className="pl-2 space-y-1">
                   {whatWeDoLinks.map((link) => (
                     <li key={link.href}>
                       <Link 
                         href={link.href}
+                        onClick={closeMobileMenu}
                         className={isLinkActive(link.href) ? 'text-[#C01C5C] font-bold bg-pink-50' : 'text-slate-700'}
                       >
                         {link.name}
@@ -122,30 +145,45 @@ export default function Navbar() {
 
               <div className="divider my-1"></div>
 
+              {/* Mobile Language Switcher */}
+              <li className="px-3 py-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-500 uppercase">{tNav('language')}</span>
+                  <LanguageSwitcher 
+                    currentLocale={locale} 
+                    isPending={isPendingLocale} 
+                    onSelectLocale={handleLanguageSwitch}
+                    variant="compact"
+                  />
+                </div>
+              </li>
+
+              <div className="divider my-1"></div>
+
               {/* Mobile Auth Links */}
               {!session?.user ? (
                 <>
                   <li>
-                    <Link href="/login" className="font-heading font-medium text-slate-700 hover:text-[#C01C5C]">
-                      Login
+                    <Link href="/login" onClick={closeMobileMenu} className="font-heading font-medium text-slate-700 hover:text-[#C01C5C]">
+                      {tNav('login')}
                     </Link>
                   </li>
                   <li>
-                    <Link href="/register" className="font-heading font-bold text-[#C01C5C]">
-                      Register
+                    <Link href="/register" onClick={closeMobileMenu} className="font-heading font-bold text-[#C01C5C]">
+                      {tNav('register')}
                     </Link>
                   </li>
                 </>
               ) : (
                 <>
                   <li>
-                    <Link href="/dashboard" className="font-heading font-medium text-slate-700">
-                      Dashboard
+                    <Link href="/dashboard" onClick={closeMobileMenu} className="font-heading font-medium text-slate-700">
+                      {tNav('dashboard')}
                     </Link>
                   </li>
                   <li>
                     <button onClick={handleSignOut} className="font-heading font-bold text-rose-600">
-                      Sign Out
+                      {tNav('signOut')}
                     </button>
                   </li>
                 </>
@@ -170,10 +208,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* 2. CENTER: Desktop Hover Dropdown Navigation */}
+        {/* 2. CENTER: Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-1 font-heading font-medium text-slate-700">
           
-          {/* Home Link */}
           <Link 
             href="/" 
             className={`rounded-xl px-4 py-2 text-base transition-all ${
@@ -182,24 +219,25 @@ export default function Navbar() {
                 : 'hover:text-[#C01C5C] hover:bg-pink-50/80'
             }`}
           >
-            Home
+            {tNav('home')}
           </Link>
 
           {/* WHO WE ARE DROPDOWN */}
           <div className="relative group">
             <button 
+              type="button"
+              aria-haspopup="true"
               className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-base transition-all ${
                 isParentActive(['/who-we-are']) 
                   ? 'bg-pink-100/80 text-[#C01C5C] font-bold' 
                   : 'hover:text-[#C01C5C] hover:bg-pink-50/80'
               }`}
             >
-              <span>Who We Are</span>
+              <span>{tNav('whoWeAre')}</span>
               <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
             </button>
 
-            {/* Dropdown Menu Box */}
-            <div className="absolute top-full left-0 pt-2 w-60 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out">
+            <div className="absolute top-full left-0 pt-2 w-60 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-200 ease-in-out z-50">
               <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
                 {whoWeAreLinks.map((link) => (
                   <Link
@@ -221,18 +259,19 @@ export default function Navbar() {
           {/* WHAT WE DO DROPDOWN */}
           <div className="relative group">
             <button 
+              type="button"
+              aria-haspopup="true"
               className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-base transition-all ${
                 isParentActive(['/what-we-do']) 
                   ? 'bg-pink-100/80 text-[#C01C5C] font-bold' 
                   : 'hover:text-[#C01C5C] hover:bg-pink-50/80'
               }`}
             >
-              <span>What We Do</span>
+              <span>{tNav('whatWeDo')}</span>
               <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
             </button>
 
-            {/* Dropdown Menu Box */}
-            <div className="absolute top-full left-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out">
+            <div className="absolute top-full left-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-200 ease-in-out z-50">
               <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
                 {whatWeDoLinks.map((link) => (
                   <Link
@@ -250,21 +289,31 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-
         </nav>
 
-        {/* 3. RIGHT: Auth Actions & User Profile */}
+        {/* 3. RIGHT: Language Switcher & Auth Actions */}
         <div className="flex items-center gap-3">
+          {/* DESKTOP LANGUAGE SWITCHER */}
+          <div className="hidden sm:block">
+            <LanguageSwitcher 
+              currentLocale={locale} 
+              isPending={isPendingLocale} 
+              onSelectLocale={handleLanguageSwitch}
+            />
+          </div>
+
+          {/* Authenticated / Visitor State */}
           {isPending ? (
-            /* Skeleton Loading Pulse */
             <div className="flex items-center gap-2 text-xs text-slate-500 font-medium px-3 py-1.5 rounded-xl bg-pink-50/50">
               <Spinner size="sm" />
-              <span>Verifying...</span>
             </div>
           ) : session?.user ? (
-            /* Authenticated User Menu */
             <div className="relative group">
-              <button className="flex items-center gap-2 p-1 rounded-full border-2 border-pink-200 hover:border-[#C01C5C] transition-all bg-white">
+              <button 
+                type="button"
+                aria-label="User Menu"
+                className="flex items-center gap-2 p-1 rounded-full border-2 border-pink-200 hover:border-[#C01C5C] transition-all bg-white"
+              >
                 <div className="relative w-9 h-9 rounded-full overflow-hidden">
                   <Image
                     src={userAvatarSrc}
@@ -276,11 +325,8 @@ export default function Navbar() {
                 </div>
               </button>
 
-              {/* User Dropdown Box */}
-              <div className="absolute top-full right-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 ease-in-out z-50">
+              <div className="absolute top-full right-0 pt-2 w-56 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto transition-all duration-200 ease-in-out z-50">
                 <div className="bg-white border border-pink-100 rounded-2xl shadow-xl p-2 space-y-1">
-                  
-                  {/* User Profile Header */}
                   <div className="px-3 py-2 border-b border-slate-100">
                     <p className="text-xs font-bold text-slate-900 truncate">
                       {session.user.name}
@@ -295,7 +341,7 @@ export default function Navbar() {
                     className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50/60 rounded-xl transition-colors"
                   >
                     <LayoutDashboard className="w-4 h-4" />
-                    <span>Dashboard</span>
+                    <span>{tNav('dashboard')}</span>
                   </Link>
 
                   <Link
@@ -303,7 +349,7 @@ export default function Navbar() {
                     className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50/60 rounded-xl transition-colors"
                   >
                     <User className="w-4 h-4" />
-                    <span>Profile Settings</span>
+                    <span>{tNav('profileSettings')}</span>
                   </Link>
 
                   <div className="border-t border-slate-100 my-1"></div>
@@ -313,26 +359,24 @@ export default function Navbar() {
                     className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors text-left"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
+                    <span>{tNav('signOut')}</span>
                   </button>
-
                 </div>
               </div>
             </div>
           ) : (
-            /* Unauthenticated Visitor CTA Buttons */
             <>
               <Link
                 href="/login"
                 className="btn btn-ghost font-heading font-semibold text-slate-700 hover:text-[#C01C5C] hover:bg-pink-50 rounded-xl px-5 border-none hidden sm:inline-flex"
               >
-                Login
+                {tNav('login')}
               </Link>
               <Link
                 href="/register"
                 className="btn font-heading font-semibold bg-[#C01C5C] hover:bg-[#a0164c] text-white rounded-xl px-6 border-none shadow-sm shadow-pink-200"
               >
-                Register
+                {tNav('register')}
               </Link>
             </>
           )}

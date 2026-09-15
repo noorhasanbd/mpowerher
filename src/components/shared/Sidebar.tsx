@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { authClient } from '@/lib/auth-client'; // Adjust path if your authClient is located elsewhere
+import { authClient } from '@/lib/auth-client';
 import {
   LayoutDashboard,
   BookOpen,
@@ -23,20 +23,24 @@ import {
   Home,
 } from 'lucide-react';
 
-type UserRole = 'student' | 'educator' | 'admin';
+export type UserRole = 'student' | 'educator' | 'admin';
 
 interface SidebarProps {
   userRole?: UserRole;
 }
 
-export default function Sidebar({ userRole = 'student' }: SidebarProps) {
+export default function Sidebar({ userRole: propRole }: SidebarProps) {
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // Fetch real-time user session from Better-Auth
   const { data: session, isPending } = authClient.useSession();
-  const user = session?.user;
+  const user = session?.user as (typeof session)['user'] & { role?: UserRole };
+
+  // Resolve role: Session role takes priority -> Prop fallback -> 'student' default
+  const activeRole: UserRole =
+    (user?.role?.toLowerCase() as UserRole) || propRole || 'student';
 
   const handleSignOut = async () => {
     await authClient.signOut({
@@ -49,7 +53,7 @@ export default function Sidebar({ userRole = 'student' }: SidebarProps) {
   };
 
   // Navigation items scoped by role + shared period tracker link
-  const navItemsByRole = {
+  const navItemsByRole: Record<UserRole, { name: string; href: string; icon: React.ElementType }[]> = {
     student: [
       { name: 'Overview', href: '/student', icon: LayoutDashboard },
       { name: 'Cycle Tracker', href: '/tracker', icon: CalendarHeart },
@@ -72,7 +76,7 @@ export default function Sidebar({ userRole = 'student' }: SidebarProps) {
     ],
   };
 
-  const navItems = navItemsByRole[userRole] || navItemsByRole.student;
+  const navItems = navItemsByRole[activeRole] || navItemsByRole.student;
 
   const roleBadges: Record<UserRole, { label: string; bg: string }> = {
     student: { label: 'Student Portal', bg: 'bg-pink-100 text-[#C01C5C]' },
@@ -138,10 +142,14 @@ export default function Sidebar({ userRole = 'student' }: SidebarProps) {
           {/* Role Portal Indicator Badge */}
           {!isCollapsed && (
             <div className="px-5 pt-4 pb-1">
-              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${roleBadges[userRole].bg}`}>
-                <Sparkles className="w-3 h-3" />
-                {roleBadges[userRole].label}
-              </span>
+              {isPending ? (
+                <div className="h-6 w-28 bg-slate-100 rounded-full animate-pulse" />
+              ) : (
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${roleBadges[activeRole].bg}`}>
+                  <Sparkles className="w-3 h-3" />
+                  {roleBadges[activeRole].label}
+                </span>
+              )}
             </div>
           )}
 
@@ -190,7 +198,7 @@ export default function Sidebar({ userRole = 'student' }: SidebarProps) {
                   `}
                 >
                   <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-[#C01C5C]' : 'text-slate-400 group-hover:text-slate-600'}`} />
-                  
+
                   {!isCollapsed && (
                     <span className="truncate whitespace-nowrap">{item.name}</span>
                   )}
@@ -226,7 +234,7 @@ export default function Sidebar({ userRole = 'student' }: SidebarProps) {
           {/* User Profile Footer & Sign Out */}
           <div className={`p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-between ${isCollapsed ? 'flex-col gap-2' : ''}`}>
             <div className="flex items-center gap-3 min-w-0">
-              {/* Profile Avatar / Avatar Image / Skeleton */}
+              {/* Profile Avatar */}
               {isPending ? (
                 <div className="w-9 h-9 rounded-xl bg-slate-200 animate-pulse flex-shrink-0" />
               ) : user?.image ? (
