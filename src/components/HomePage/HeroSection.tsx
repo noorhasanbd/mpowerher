@@ -39,16 +39,16 @@ export default function HeroSection() {
           <div className="relative order-1 lg:order-1 flex justify-center items-center">
             <div className="relative w-full max-w-md lg:max-w-xl aspect-square flex items-end justify-center">
               
-              {/* Layer 1 (BACKGROUND): Pad rotated completely horizontal (90deg) */}
+              {/* Layer 1 (BACKGROUND): Pad shifted downward using translate-y-12 / top-[55%] */}
               <motion.div
-                className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none"
-                initial={{ opacity: 0, scale: 3 }}
-                animate={{ opacity: 1, scale: 1 }}
+                className="absolute inset-0 top-[55%] -translate-y-1/2 flex items-center justify-center z-0 pointer-events-none"
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1.25 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
               >
                 <motion.div
-                  className="relative w-[140%] sm:w-[150%] rotate-55"
-                  animate={{ y: [-5, 5] }}
+                  className="relative w-[140%] sm:w-[150%] rotate-55 translate-y-10"
+                  animate={{ y: [35, 45] }}
                   transition={{
                     duration: 4,
                     repeat: Infinity,
@@ -87,7 +87,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN — Previous Design System Content */}
+          {/* RIGHT COLUMN — Text Content */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
