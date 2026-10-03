@@ -15,7 +15,7 @@ export default function Navbar() {
   const router = useRouter();
   const [isPendingLocale, startTransition] = useTransition();
 
-  const tNav = useTranslations("Navigation");
+  const tNav = useTranslations("navigation");
   const { data: session, isPending } = useSession();
 
   // Helper functions for route active states

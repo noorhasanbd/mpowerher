@@ -19,7 +19,7 @@ import {
   Loader2,
   AlertCircle,
 } from 'lucide-react';
-import { signUp } from '@/lib/auth-client'; // Adjust path if auth-client is elsewhere
+import { signUp } from '@/lib/auth-client';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -32,7 +32,7 @@ export default function RegisterPage() {
     fullName: '',
     email: '',
     password: '',
-    role: 'student', // student | educator
+    role: 'student',
     agreeTerms: false,
   });
 
@@ -48,13 +48,11 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      // Call Better Auth client sign-up method
       const { data, error: signUpError } = await signUp.email({
         email: formData.email,
         password: formData.password,
         name: formData.fullName,
-        // Passes custom role to your database / user record
-        role: formData.role, 
+        role: formData.role,
       });
 
       if (signUpError) {
@@ -63,7 +61,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // Success
       setSubmitted(true);
     } catch (err: any) {
       setError(err?.message || 'An unexpected error occurred. Please try again.');
@@ -73,7 +70,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[85vh] py-12 px-6 flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-[85vh] py-12 px-6 flex items-center justify-center relative overflow-hidden bg-white/95">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35rem] h-[35rem] bg-pink-200/40 rounded-full blur-[130px] pointer-events-none -z-10" />
 
@@ -245,7 +242,7 @@ export default function RegisterPage() {
                         setFormData({ ...formData, fullName: e.target.value })
                       }
                       placeholder="e.g. Fatima Ali"
-                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50"
+                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50 text-black"
                     />
                   </div>
                 </div>
@@ -265,7 +262,7 @@ export default function RegisterPage() {
                         setFormData({ ...formData, email: e.target.value })
                       }
                       placeholder="e.g. name@example.com"
-                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50"
+                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50 text-black"
                     />
                   </div>
                 </div>
@@ -285,7 +282,7 @@ export default function RegisterPage() {
                         setFormData({ ...formData, password: e.target.value })
                       }
                       placeholder="••••••••"
-                      className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50"
+                      className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50 text-black"
                     />
                     <button
                       type="button"
@@ -311,7 +308,7 @@ export default function RegisterPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, agreeTerms: e.target.checked })
                     }
-                    className="h-4 w-4 mt-0.5 rounded border-slate-300 text-[#C01C5C] focus:ring-pink-200"
+                    className="h-4 w-4 mt-0.5 appearance-none rounded border border-gray-300 bg-white checked:bg-[#C01C5C] checked:border-[#C01C5C] checked:bg-[url('data:image/svg+xml;utf8,<svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%223%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22><polyline%20points=%2220%206%209%2017%204%2012%22/></svg>')] bg-center bg-no-repeat focus:ring-2 focus:ring-pink-100 outline-none cursor-pointer"
                   />
                   <label
                     htmlFor="agreeTerms"

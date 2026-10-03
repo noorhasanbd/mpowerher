@@ -1,0 +1,160 @@
+{
+  "hero": {
+    "trustBadge": {
+      "label": "Trusted by",
+      "value": "10,000+ girls"
+    },
+    "activeBadge": {
+      "label": "Active now",
+      "value": "2,340 learning"
+    },
+    "badge": "Dignity Through Education",
+    "title": {
+      "before": "Empowering Girls with ",
+      "highlight": "Menstrual Kit and Health Education"
+    },
+    "description": "MPOWERHER provides confidential, localized menstrual health education and access to learning resources so every girl can grow, learn and reach her full potential.",
+    "actions": {
+      "exploreLearning": "Explore the Learning Journey",
+      "ourImpact": "Our Impact"
+    },
+    "trustBadges": {
+      "confidential": "100% Confidential",
+      "offlineOptimized": "Offline-Optimized",
+      "expertApproved": "Expert Approved"
+    }
+  },
+  "stats": {
+    "girlsEducated": {
+      "value": "10K+",
+      "label": "Girls Educated",
+      "subtext": "Across underserved communities"
+    },
+    "interactiveModules": {
+      "value": "15+",
+      "label": "Interactive Modules",
+      "subtext": "Localized & expert-approved"
+    },
+    "freeConfidential": {
+      "value": "100%",
+      "label": "Free & Confidential",
+      "subtext": "Zero cost barrier for learners"
+    },
+    "selfPaced": {
+      "value": "24/7",
+      "label": "Self-Paced Access",
+      "subtext": "Learn anytime on any device"
+    }
+  },
+  "features": {
+    "eyebrow": "Why Learn With MPOWERHER?",
+    "description": "Designed for accessible, offline-first learning on mobile devices in schools and community settings.",
+    "localizedCurriculum": {
+      "title": "Localized Curriculum",
+      "description": "Lessons adapted to local cultural contexts, helping reduce stigma while providing accurate, age-appropriate information about menstrual health and care."
+    },
+    "communitySupport": {
+      "title": "Community Support",
+      "description": "Instructors and mentors provide guidance and support, helping learners engage with lessons through structured learning and discussion."
+    },
+    "privateSecure": {
+      "title": "Private & Secure",
+      "description": "Learning progress and personal information are handled with care, creating a safe and supportive environment for every learner."
+    }
+  },
+  "modules": {
+    "eyebrow": "Explore Learning Modules",
+    "description": "Bite-sized, age-appropriate lessons designed for mobile devices.",
+    "action": "Start Module",
+    "items": {
+      "anatomy": {
+        "title": "Understanding Your Body",
+        "description": "Learn about reproductive health and the biological stages of growth."
+      },
+      "hygiene": {
+        "title": "Menstrual Care Essentials",
+        "description": "Practical steps for maintaining clean, safe, and dignified hygiene practices."
+      },
+      "nutrition": {
+        "title": "Wellness & Nutrition",
+        "description": "Understanding iron intake, exercise, and pain management during cycles."
+      }
+    }
+  },
+  "kit": {
+    "eyebrow": "What's Inside the Menstrual Kit",
+    "description": "Essential products provided to students to support health, hygiene, and dignity.",
+    "items": {
+      "pads": {
+        "title": "Reusable Sanitary Pads",
+        "description": "Washable, eco-friendly pads built for durability and long-term use."
+      },
+      "calendar": {
+        "title": "Cycle Tracking Guide",
+        "description": "Simple calendar tools to track monthly dates accurately."
+      },
+      "guide": {
+        "title": "Educational Booklet",
+        "description": "Printed guide for offline reading and personal reference."
+      },
+      "hygiene": {
+        "title": "Sanitization Essentials",
+        "description": "Gentle soap, sanitizer, and protective storage pouch."
+      }
+    }
+  },
+  "testimonials": {
+    "eyebrow": "Voices of Impact",
+    "description": "See how localized health education and free hygiene kits are changing lives across communities.",
+    "items": {
+      "student": {
+        "quote": "Having access to private, clear lessons in my language gave me the confidence to attend school without fear during my period.",
+        "author": "Nusrat Jahan",
+        "role": "Class 9 Student",
+        "location": "Rangpur"
+      },
+      "teacher": {
+        "quote": "MPOWERHER provided our school with the tools and training to breakdown social stigma and keep our female students enrolled.",
+        "author": "Farhana Ahmed",
+        "role": "Head Teacher",
+        "location": "Sylhet"
+      },
+      "volunteer": {
+        "quote": "Distributing these kits alongside interactive digital education ensures long-term impact rather than just short-term relief.",
+        "author": "Rashid Khan",
+        "role": "Community Health Lead",
+        "location": "Dhaka"
+      }
+    }
+  },
+  "partners": {
+    "eyebrow": "Trusted by Leading Educational & Community Networks"
+  },
+  "faq": {
+    "eyebrow": "Frequently Asked Questions",
+    "description": "Everything you need to know about our privacy policies, kit access, and offline learning.",
+    "items": {
+      "q1": {
+        "question": "Is learning progress and user data kept confidential?",
+        "answer": "Yes. Student profiles and progress tracking are encrypted and private, ensuring no sensitive personal information is ever publicly accessible."
+      },
+      "q2": {
+        "question": "Does the app work without an active internet connection?",
+        "answer": "Absolutely. Modules can be downloaded when connected to Wi-Fi or cellular networks and accessed anytime offline."
+      },
+      "q3": {
+        "question": "How can schools or community organizations request menstrual kits?",
+        "answer": "Registered partner schools and health facilitators can submit a kit request form directly through our portal or by contacting local field agents."
+      },
+      "q4": {
+        "question": "Are the educational materials free to use?",
+        "answer": "Yes, 100% of our educational content, interactive modules, and digital resources are free for students and schools."
+      }
+    }
+  },
+  "cta": {
+    "title": "Ready to Empower the Next Generation?",
+    "description": "Create an account to access learning resources or explore opportunities to bring MPOWERHER learning to your school or community.",
+    "button": "Get Started Free"
+  }
+}

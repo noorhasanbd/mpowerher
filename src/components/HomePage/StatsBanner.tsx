@@ -3,35 +3,15 @@
 import React, { useRef } from 'react';
 import { motion, useInView, Variants } from 'framer-motion';
 import { GraduationCap, BookOpenCheck, ShieldCheck, Clock } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
-const stats = [
-  {
-    icon: GraduationCap,
-    value: '10K+',
-    label: 'Girls Educated',
-    subtext: 'Across underserved communities',
-  },
-  {
-    icon: BookOpenCheck,
-    value: '15+',
-    label: 'Interactive Modules',
-    subtext: 'Localized & expert-approved',
-  },
-  {
-    icon: ShieldCheck,
-    value: '100%',
-    label: 'Free & Confidential',
-    subtext: 'Zero cost barrier for learners',
-  },
-  {
-    icon: Clock,
-    value: '24/7',
-    label: 'Self-Paced Access',
-    subtext: 'Learn anytime on any device',
-  },
+const statConfig = [
+  { key: 'girlsEducated', icon: GraduationCap },
+  { key: 'interactiveModules', icon: BookOpenCheck },
+  { key: 'freeConfidential', icon: ShieldCheck },
+  { key: 'selfPaced', icon: Clock },
 ];
 
-// Explicitly typed Framer Motion Variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -55,9 +35,12 @@ export default function StatsBanner() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
+  // Specify namespace (assuming keys live inside home.json under "stats")
+  const t = useTranslations('home.stats');
+
   return (
     <section ref={ref} className="relative py-16 bg-[#C01C5C] overflow-hidden text-white">
-      {/* 1. Subtle Background Glow & Grid Texture */}
+      {/* Background Glow & Grid Texture */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent_60%)] pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-pink-400/20 rounded-full blur-3xl pointer-events-none" />
 
@@ -68,11 +51,11 @@ export default function StatsBanner() {
           animate={isInView ? 'visible' : 'hidden'}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
         >
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
+          {statConfig.map((item) => {
+            const Icon = item.icon;
             return (
               <motion.div
-                key={index}
+                key={item.key}
                 variants={itemVariants}
                 whileHover={{ y: -4, scale: 1.02 }}
                 className="group relative bg-white/10 backdrop-blur-md border border-white/15 rounded-3xl p-6 transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:shadow-2xl hover:shadow-black/10 flex flex-col items-center text-center"
@@ -82,19 +65,19 @@ export default function StatsBanner() {
                   <Icon className="w-6 h-6 text-white group-hover:text-[#C01C5C] transition-colors" />
                 </div>
 
-                {/* Number */}
+                {/* Number / Value */}
                 <h3 className="font-heading font-extrabold text-4xl sm:text-5xl text-white tracking-tight mb-1">
-                  {stat.value}
+                  {t(`${item.key}.value`)}
                 </h3>
 
                 {/* Label */}
                 <p className="font-heading font-semibold text-base text-pink-100 mb-1">
-                  {stat.label}
+                  {t(`${item.key}.label`)}
                 </p>
 
                 {/* Subtext */}
                 <p className="font-sans text-xs text-pink-200/80 leading-relaxed">
-                  {stat.subtext}
+                  {t(`${item.key}.subtext`)}
                 </p>
 
                 {/* Decorative Bottom Line Accent */}

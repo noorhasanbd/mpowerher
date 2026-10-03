@@ -1,269 +1,840 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState } from "react";
 import {
-  Heart,
-  Target,
-  Eye,
-  ShieldCheck,
+  Lock,
+  WifiOff,
   Users,
-  Sparkles,
-  Award,
-  Globe,
   ArrowRight,
+  Users2,
   BookOpen,
+  Clock,
+  XCircle,
   CheckCircle2,
-} from 'lucide-react';
+  Eye,
+  EyeOff,
+  Heart,
+  MessageCircle,
+} from "lucide-react";
 
-const values = [
-  {
-    icon: Heart,
-    title: 'Dignity First',
-    description: 'Menstrual care is a fundamental human right. Every kit distributed protects personal health and self-respect.',
-  },
-  {
-    icon: Target,
-    title: 'Educational Equity',
-    description: 'We dismantle health literacy barriers using accessible, digital-first Learning Management Systems (LMS).',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Sustainable Care',
-    description: 'Combining eco-conscious products with long-term community workshops to break menstrual taboos permanently.',
-  },
-  {
-    icon: Users,
-    title: 'Community-Driven',
-    description: 'Empowering local leaders, educators, and youth volunteers to drive lasting change from within.',
-  },
-];
+/* =====================================================================
+   1. NAVBAR
+   ===================================================================== */
+function Navbar() {
+  const links = ["Who We Are", "What We Do", "Resources", "Our Impact"];
+  return (
+    <motion.header
+      initial={{ y: -40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="sticky top-0 z-50 backdrop-blur-xl bg-white/70 border-b border-pink-100/80"
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#" className="flex items-center gap-2">
+          <span className="text-2xl font-black tracking-tight text-[#BE185D]">
+            MPOWER<span className="text-slate-900">HER</span>
+          </span>
+        </a>
 
-const timeline = [
-  {
-    year: '2023',
-    title: 'Grassroots Beginning',
-    detail: 'Launched our initial pilot program distributing hygiene kits to 500 local students.',
-  },
-  {
-    year: '2024',
-    title: 'LMS Digital Rollout',
-    detail: 'Built and deployed interactive reproductive health education modules across partner schools.',
-  },
-  {
-    year: '2025',
-    title: 'Holistic Health Kits',
-    detail: 'Expanded care packages to include heat compression tools for cramp relief and nutrition packs.',
-  },
-  {
-    year: '2026',
-    title: 'Scaling Impact',
-    detail: 'Over 25,000+ hygiene kits distributed and 10,000+ active learners across the platform.',
-  },
-];
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+          {links.map((l) => (
+            <a
+              key={l}
+              href="#"
+              className="hover:text-[#BE185D] transition-colors relative group"
+            >
+              {l}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#BE185D] group-hover:w-full transition-all duration-300" />
+            </a>
+          ))}
+        </nav>
 
-export default function AboutUsPage() {
-  const [activePillar, setActivePillar] = useState<'mission' | 'vision'>('mission');
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-2 text-xs font-semibold">
+            <button className="text-[#BE185D]">EN</button>
+            <span className="text-slate-300">|</span>
+            <button className="text-slate-400 hover:text-slate-900 transition-colors">
+              বাংলা
+            </button>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-5 py-2.5 bg-[#BE185D] text-white text-xs font-bold rounded-full shadow-lg shadow-pink-700/20 hover:bg-[#9D174D] hover:shadow-xl hover:shadow-pink-700/30 transition-all"
+          >
+            Get Started
+          </motion.button>
+        </div>
+      </div>
+    </motion.header>
+  );
+}
+
+/* =====================================================================
+   2. HERO
+   ===================================================================== */
+function Hero() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  const trustBadges = [
+    { icon: Lock, label: "Confidential by design" },
+    { icon: WifiOff, label: "Works offline" },
+    { icon: Users, label: "Expert-informed" },
+  ];
+  const stats = [
+    { icon: Users2, value: "10K+", label: "Girls reached" },
+    { icon: BookOpen, value: "15+", label: "Learning modules" },
+    { icon: Clock, value: "24/7", label: "Self-paced access" },
+  ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-800 overflow-hidden font-sans">
-      
-      {/* 1. HERO SECTION */}
-      <section className="relative py-20 lg:py-28 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
-        {/* Soft Ambient Light Glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35rem] sm:w-[50rem] h-[25rem] bg-pink-200/50 rounded-full blur-[120px] pointer-events-none -z-10" />
+    <section ref={ref} className="relative pt-12 pb-20 overflow-hidden">
+      <div className="absolute inset-0 grain opacity-40 pointer-events-none" />
+      <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-pink-200/40 rounded-full blur-3xl" />
+      <div className="absolute top-40 -left-40 w-[500px] h-[500px] bg-rose-100/60 rounded-full blur-3xl" />
 
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-100/80 border border-pink-200/80 text-[#C01C5C] font-semibold text-xs sm:text-sm uppercase tracking-widest mb-6 shadow-xs"
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>Who We Are</span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-4xl text-slate-900 leading-[1.15]"
-        >
-          Empowering Her Future Through <span className="bg-gradient-to-r from-[#C01C5C] via-pink-600 to-rose-500 bg-clip-text text-transparent">Health & Education.</span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 text-base sm:text-xl text-slate-600 max-w-2xl font-normal leading-relaxed"
-        >
-          MPOWERHER is a non-profit movement dedicated to ending period poverty, shattering health taboos, and keeping girls in school through innovative care and digital learning.
-        </motion.p>
-      </section>
-
-      {/* 2. INTERACTIVE MISSION & VISION PILLARS */}
-      <section className="py-12 px-6 max-w-5xl mx-auto">
-        <div className="bg-white border border-pink-100 rounded-3xl p-8 sm:p-12 shadow-xl shadow-pink-100/40 relative">
-          
-          {/* Pillar Switcher Controls */}
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80">
-              <button
-                onClick={() => setActivePillar('mission')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                  activePillar === 'mission'
-                    ? 'bg-[#C01C5C] text-white shadow-md'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <Target className="w-4 h-4" />
-                <span>Our Mission</span>
-              </button>
-              <button
-                onClick={() => setActivePillar('vision')}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                  activePillar === 'vision'
-                    ? 'bg-[#C01C5C] text-white shadow-md'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <Eye className="w-4 h-4" />
-                <span>Our Vision</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Dynamic Content Display */}
-          <AnimatePresence mode="wait">
-            {activePillar === 'mission' ? (
-              <motion.div
-                key="mission"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="text-center space-y-4 max-w-2xl mx-auto"
-              >
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                  Dignity, Health, and Education for Every Girl
-                </h2>
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-normal">
-                  Our mission is to eliminate menstrual health barriers by providing direct access to essential hygiene supplies, cramp relief care, nutritional support, and interactive digital education that keeps young women in school.
-                </p>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="vision"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="text-center space-y-4 max-w-2xl mx-auto"
-              >
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                  A World Without Period Stigma or Absenteeism
-                </h2>
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-normal">
-                  We envision a future where no student misses a single day of school because of her period, where health education is universally accessible, and where every young woman has full autonomy over her body and health.
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
-
-      {/* 3. CORE VALUES GRID */}
-      <section className="py-16 lg:py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">The Principles That Drive Us</h2>
-          <p className="text-slate-600 text-base">Every initiative we build is guided by empathy, scientific education, and community respect.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {values.map((val, idx) => {
-            const Icon = val.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                whileHover={{ y: -6 }}
-                className="bg-white border border-pink-100 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:shadow-pink-100/50 hover:border-pink-300 transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="h-12 w-12 rounded-2xl bg-pink-50 border border-pink-200 text-[#C01C5C] flex items-center justify-center mb-6">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">{val.title}</h3>
-                  <p className="text-slate-600 text-sm font-normal leading-relaxed">{val.description}</p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 4. OUR MILESTONES & JOURNEY */}
-      <section className="py-16 lg:py-24 px-6 max-w-5xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900">Our Growth & Impact Story</h2>
-          <p className="text-slate-600 text-base">From a local community outreach initiative to a tech-enabled health movement.</p>
-        </div>
-
-        <div className="space-y-6">
-          {timeline.map((item, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="bg-white border border-pink-100 rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-start sm:items-center gap-6"
+      <div className="relative max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div style={{ y, opacity }} className="space-y-6">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-xs font-bold tracking-[0.2em] text-[#BE185D] uppercase"
             >
-              <div className="px-4 py-2 rounded-xl bg-pink-50 border border-pink-200 text-[#C01C5C] font-extrabold text-lg sm:text-xl shrink-0">
-                {item.year}
+              Dignity Through Education
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.7 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-slate-900"
+            >
+              Every girl deserves to learn{" "}
+              <span className="text-[#BE185D] italic">without fear.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="text-slate-600 text-lg max-w-xl leading-relaxed"
+            >
+              MPOWERHER provides confidential, localized menstrual health
+              education and access to learning resources so every girl can
+              grow, learn and reach her full potential.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap gap-3 pt-2"
+            >
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#BE185D] text-white text-sm font-bold rounded-full shadow-lg shadow-pink-700/20 hover:bg-[#9D174D] hover:shadow-xl hover:shadow-pink-700/30 transition-all"
+              >
+                Explore the learning journey <ArrowRight size={16} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-pink-50/80 text-[#BE185D] text-sm font-bold rounded-full border border-pink-200/80 hover:bg-pink-100/80 transition-all"
+              >
+                Our Impact
+              </motion.button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="flex flex-wrap gap-6 pt-4 border-t border-pink-100"
+            >
+              {trustBadges.map(({ icon: Icon, label }) => (
+                <div
+                  key={label}
+                  className="flex items-center gap-2 text-sm text-slate-600"
+                >
+                  <Icon size={16} className="text-[#BE185D]" />
+                  {label}
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="relative"
+          >
+            <div className="relative rounded-3xl overflow-hidden aspect-[4/5] bg-gradient-to-br from-pink-100 to-rose-200">
+              <img
+                src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=800&q=80"
+                alt="Girls learning"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-pink-900/20 to-transparent" />
+            </div>
+            <motion.div
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-4 shadow-xl shadow-pink-100 flex items-center gap-3 border border-pink-100/60"
+            >
+              <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+                <Users2 size={20} className="text-[#BE185D]" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{item.detail}</p>
+                <p className="text-xs text-slate-500">Live now</p>
+                <p className="text-sm font-bold text-slate-900">
+                  2,340 girls learning
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="mt-16 bg-white/60 backdrop-blur rounded-3xl border border-pink-100 p-8 grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          {stats.map(({ icon: Icon, value, label }, i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="flex items-center gap-4"
+            >
+              <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center">
+                <Icon size={22} className="text-[#BE185D]" />
+              </div>
+              <div>
+                <p className="text-2xl font-black text-[#BE185D]">{value}</p>
+                <p className="text-sm text-slate-600">{label}</p>
               </div>
             </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
-      {/* 5. CALL TO ACTION BANNER */}
-      <section className="py-12 lg:py-20 px-6 max-w-5xl mx-auto">
-        <div className="relative rounded-3xl bg-gradient-to-r from-[#C01C5C] via-pink-600 to-rose-600 p-10 sm:p-14 text-center overflow-hidden shadow-2xl shadow-pink-200">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent_50%)] pointer-events-none" />
-          
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight relative z-10">
-            Be Part of the MPOWERHER Movement
-          </h2>
-          <p className="mt-4 text-pink-100 text-base sm:text-lg max-w-xl mx-auto font-normal relative z-10">
-            Whether through volunteering, sponsoring health kits, or joining our educational team, your support changes lives.
-          </p>
+/* =====================================================================
+   3. SCROLL STORY — "A Day Without Knowing"
+   ===================================================================== */
+interface DayState {
+  label: string;
+  status: "negative" | "positive";
+  scenes: {
+    time: string;
+    title: string;
+    body: string;
+    image: string;
+    highlight?: string;
+  }[];
+}
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-            <a
-              href="/who-we-are/volunteer"
-              className="px-8 py-4 rounded-xl bg-white text-[#C01C5C] font-bold text-base hover:bg-pink-50 transition-colors shadow-lg"
-            >
-              Become a Volunteer
-            </a>
-            <a
-              href="/what-we-do/our-impact"
-              className="px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white font-semibold text-base hover:bg-white/20 transition-colors"
-            >
-              Explore Our Impact
-            </a>
+const WITHOUT: DayState = {
+  label: "Without knowledge",
+  status: "negative",
+  scenes: [
+    {
+      time: "8:15 AM",
+      title: "She skips class.",
+      body: "Cramps arrive. She doesn't know why or what to do. She stays home — again.",
+      image:
+        "https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&q=80",
+      highlight: "absence #3 this month",
+    },
+    {
+      time: "11:40 AM",
+      title: "She hides in the bathroom.",
+      body: "Whispers behind her back. No one explained this. She feels dirty, alone, wrong.",
+      image:
+        "https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800&q=80",
+      highlight: "silence and shame",
+    },
+    {
+      time: "3:00 PM",
+      title: "She walks home alone.",
+      body: "Missed the lesson. Missed her friends. Another day lost to something no one would name.",
+      image:
+        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
+      highlight: "future at risk",
+    },
+  ],
+};
+
+const WITH: DayState = {
+  label: "With knowledge",
+  status: "positive",
+  scenes: [
+    {
+      time: "8:15 AM",
+      title: "She attends class.",
+      body: "She knows what's happening to her body. She packs what she needs and walks in confidently.",
+      image:
+        "https://images.unsplash.com/photo-1497486751825-1233686d5d80?w=800&q=80",
+      highlight: "prepared & present",
+    },
+    {
+      time: "11:40 AM",
+      title: "She asks questions.",
+      body: "No shame, just curiosity. Her teacher answers. Her friends listen. Stigma loses power.",
+      image:
+        "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=800&q=80",
+      highlight: "knowledge shared",
+    },
+    {
+      time: "3:00 PM",
+      title: "She walks home with friends.",
+      body: "Full day of learning. Full confidence. Because someone finally told her the truth.",
+      image:
+        "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80",
+      highlight: "future intact",
+    },
+  ],
+};
+
+function StoryScene({
+  scene,
+  progress,
+  index,
+  total,
+}: {
+  scene: DayState["scenes"][0];
+  progress: MotionValue<number>;
+  index: number;
+  total: number;
+}) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const mid = (start + end) / 2;
+
+  const opacity = useTransform(
+    progress,
+    [start, start + 0.05, mid, end - 0.05, end],
+    [0, 1, 1, 1, 0]
+  );
+  const scale = useTransform(progress, [start, mid, end], [0.9, 1, 0.9]);
+  const y = useTransform(progress, [start, end], [40, -40]);
+
+  return (
+    <motion.div
+      style={{ opacity, scale, y }}
+      className="absolute inset-0 flex items-center justify-center px-6"
+    >
+      <div className="grid md:grid-cols-2 gap-8 items-center w-full max-w-6xl">
+        <div className="relative rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl shadow-pink-200/50 border-4 border-white bg-pink-100">
+          <img
+            src={scene.image}
+            alt={scene.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-xs font-bold shadow-md">
+            {scene.time}
           </div>
         </div>
-      </section>
+        <div className="space-y-4">
+          {scene.highlight && (
+            <span className="inline-block text-xs font-bold tracking-widest uppercase text-[#BE185D] bg-pink-50 px-3 py-1 rounded-full border border-pink-100">
+              {scene.highlight}
+            </span>
+          )}
+          <h3 className="text-4xl md:text-5xl font-black leading-tight text-slate-900">
+            {scene.title}
+          </h3>
+          <p className="text-lg text-slate-600 leading-relaxed">
+            {scene.body}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
-    </div>
+function ProgressDot({
+  progress,
+  index,
+  total,
+}: {
+  progress: MotionValue<number>;
+  index: number;
+  total: number;
+}) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const scale = useTransform(
+    progress,
+    [start, (start + end) / 2, end],
+    [1, 1.6, 1]
+  );
+  const bg = useTransform(
+    progress,
+    [start, (start + end) / 2, end],
+    ["#FBCFE8", "#BE185D", "#FBCFE8"]
+  );
+  return (
+    <motion.div
+      style={{ scale, background: bg }}
+      className="w-2 h-2 rounded-full"
+    />
+  );
+}
+
+function ScrollStory() {
+  const [mode, setMode] = useState<"without" | "with">("without");
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+
+  const state = mode === "without" ? WITHOUT : WITH;
+  const total = state.scenes.length;
+
+  return (
+    <section className="py-24 bg-gradient-to-b from-white to-pink-50/40">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <p className="text-xs font-bold tracking-[0.2em] text-[#BE185D] uppercase mb-3">
+            A Day Without Knowing
+          </p>
+          <h2 className="text-5xl md:text-6xl font-black leading-tight mb-4 text-slate-900">
+            A day can change <br />
+            <span className="text-[#BE185D] italic">when knowledge does.</span>
+          </h2>
+          <p className="text-lg text-slate-600">
+            The same girl. The same school. Two different outcomes. Scroll to
+            see how menstrual health education changes everything.
+          </p>
+        </div>
+
+        {/* Toggle */}
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex p-1 bg-pink-100/60 rounded-full border border-pink-200/80 shadow-inner">
+            {(["without", "with"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => {
+                  setMode(m);
+                  ref.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+                }}
+                className={`relative px-6 py-2 rounded-full text-sm font-bold transition-colors ${
+                  mode === m
+                    ? "text-white"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                {mode === m && (
+                  <motion.span
+                    layoutId="toggle-bg"
+                    className="absolute inset-0 bg-[#BE185D] rounded-full shadow-md"
+                    transition={{
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 30,
+                    }}
+                  />
+                )}
+                <span className="relative flex items-center gap-2">
+                  {m === "without" ? <EyeOff size={14} /> : <Eye size={14} />}
+                  {m === "without" ? "Without knowledge" : "With knowledge"}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Sticky scroll story */}
+        <div ref={ref} className="relative h-[300vh]">
+          <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-10 left-10 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                {mode === "without"
+                  ? "DAY WITHOUT KNOWING"
+                  : "DAY WITH KNOWLEDGE"}
+              </div>
+              <div className="absolute top-10 right-10 flex items-center gap-2">
+                {state.status === "negative" ? (
+                  <>
+                    <XCircle size={16} className="text-rose-500" />
+                    <span className="text-xs font-bold text-rose-600">
+                      Fear & missed opportunity
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 size={16} className="text-emerald-500" />
+                    <span className="text-xs font-bold text-emerald-600">
+                      Confidence & learning
+                    </span>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {state.scenes.map((s, i) => (
+              <StoryScene
+                key={`${mode}-${i}`}
+                scene={s}
+                progress={scrollYProgress}
+                index={i}
+                total={total}
+              />
+            ))}
+
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2">
+              {state.scenes.map((_, i) => (
+                <ProgressDot
+                  key={i}
+                  progress={scrollYProgress}
+                  index={i}
+                  total={total}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =====================================================================
+   4. LETTERS TO HER
+   ===================================================================== */
+const LETTERS = [
+  {
+    text: "You are not alone.",
+    from: "A fellow girl",
+    rotate: -3,
+    color: "bg-pink-100",
+  },
+  {
+    text: "Your questions deserve kind answers.",
+    from: "A mentor",
+    rotate: 2,
+    color: "bg-amber-50",
+  },
+  {
+    text: "Knowledge belongs to you.",
+    from: "A woman who cares",
+    rotate: -2,
+    color: "bg-rose-100",
+  },
+  {
+    text: "I wish someone had told me sooner.",
+    from: "A big sister",
+    rotate: 3,
+    color: "bg-pink-50",
+  },
+  {
+    text: "Your body is not a secret.",
+    from: "A teacher",
+    rotate: -4,
+    color: "bg-amber-50",
+  },
+  {
+    text: "Shame was never yours to carry.",
+    from: "Someone who knows",
+    rotate: 2,
+    color: "bg-rose-50",
+  },
+];
+
+function Letters() {
+  return (
+    <section className="py-24 bg-pink-50/40 relative overflow-hidden">
+      <div className="absolute inset-0 grain opacity-30 pointer-events-none" />
+      <div className="max-w-7xl mx-auto px-6 relative">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-start">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:sticky lg:top-32"
+          >
+            <p className="text-xs font-bold tracking-[0.2em] text-[#BE185D] uppercase mb-3">
+              Letters to Her
+            </p>
+            <h2 className="text-5xl font-black leading-tight mb-4 text-slate-900">
+              Real words. <br />
+              <span className="text-[#BE185D] italic">Lasting impact.</span>
+            </h2>
+            <p className="text-slate-600 leading-relaxed">
+              Anonymous notes from women and mentors who've been there. A
+              little encouragement can make a big difference.
+            </p>
+            <div className="mt-6 flex items-center gap-2 text-sm text-[#BE185D] font-bold">
+              <Heart size={16} fill="currentColor" />
+              2,847 notes shared
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {LETTERS.map((l, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 40, rotate: 0 }}
+                whileInView={{ opacity: 1, y: 0, rotate: l.rotate }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: i * 0.08 }}
+                whileHover={{ rotate: 0, scale: 1.03, y: -6 }}
+                className={`paper-note p-6 rounded-lg ${l.color} border border-pink-100/60 cursor-pointer`}
+              >
+                <p className="font-hand text-2xl text-slate-800 leading-snug mb-4">
+                  "{l.text}"
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#BE185D]/80">
+                    — {l.from}
+                  </span>
+                  <Heart size={14} className="text-[#BE185D]/40" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =====================================================================
+   5. BREAK THE SILENCE
+   ===================================================================== */
+const PAIRS = [
+  { whisper: "that time", truth: "menstrual health" },
+  { whisper: "a problem", truth: "period care" },
+  { whisper: "keep quiet", truth: "ask questions" },
+];
+
+function WordSwap({
+  pair,
+  index,
+  progress,
+}: {
+  pair: { whisper: string; truth: string };
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const start = 0.15 + index * 0.2;
+  const end = start + 0.2;
+  const whisperOpacity = useTransform(progress, [start, end], [1, 0.15]);
+  const truthOpacity = useTransform(progress, [start, end], [0, 1]);
+  const truthY = useTransform(progress, [start, end], [20, 0]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.15 }}
+      className="group flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 rounded-2xl bg-white border border-pink-100 hover:border-[#BE185D] hover:shadow-xl hover:shadow-pink-100/50 transition-all cursor-pointer"
+    >
+      <motion.span
+        style={{ opacity: whisperOpacity }}
+        className="font-hand text-3xl text-slate-400 line-through decoration-[#BE185D]/50 decoration-2"
+      >
+        {pair.whisper}
+      </motion.span>
+
+      <ArrowRight className="text-[#BE185D] shrink-0" size={20} />
+
+      <motion.span
+        style={{ opacity: truthOpacity, y: truthY }}
+        className="px-5 py-2 rounded-full bg-[#BE185D] text-white font-bold shadow-lg shadow-pink-200 sm:ml-auto"
+      >
+        {pair.truth}
+      </motion.span>
+    </motion.div>
+  );
+}
+
+function BreakSilence() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.8", "end 0.4"],
+  });
+
+  return (
+    <section
+      ref={ref}
+      className="py-24 bg-gradient-to-b from-pink-50/40 to-white"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-5"
+          >
+            <p className="text-xs font-bold tracking-[0.2em] text-[#BE185D] uppercase">
+              From Silence to Understanding
+            </p>
+            <h2 className="text-5xl md:text-6xl font-black leading-tight text-slate-900">
+              Different words. <br />
+              <span className="text-[#BE185D] italic">Same girl.</span>
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed max-w-md">
+              For too long, girls were taught to whisper. Now, it's time to
+              speak, learn and normalize menstrual health.
+            </p>
+            <div className="flex items-center gap-2 pt-2 text-sm font-bold text-[#BE185D]">
+              <MessageCircle size={16} />
+              Scroll to reveal the truth
+            </div>
+          </motion.div>
+
+          <div className="space-y-6">
+            {PAIRS.map((pair, i) => (
+              <WordSwap
+                key={i}
+                pair={pair}
+                index={i}
+                progress={scrollYProgress}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* =====================================================================
+   6. CTA
+   ===================================================================== */
+function CTA() {
+  return (
+    <section className="py-16">
+      <div className="max-w-7xl mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-pink-50 via-rose-50 to-pink-100 p-10 md:p-16"
+        >
+          <div className="absolute -left-10 -top-10 w-64 h-64 bg-pink-200/40 rounded-full blur-3xl" />
+          <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-rose-200/40 rounded-full blur-3xl" />
+          <Heart
+            className="absolute right-10 top-10 text-pink-200 w-32 h-32 hidden md:block"
+            strokeWidth={0.5}
+          />
+
+          <div className="relative grid md:grid-cols-[1fr_auto] gap-8 items-center">
+            <div className="space-y-4 max-w-2xl">
+              <p className="text-xs font-bold tracking-[0.2em] text-[#BE185D] uppercase">
+                Let's Build a Brighter Future
+              </p>
+              <h2 className="text-4xl md:text-5xl font-black leading-tight text-slate-900">
+                Help make learning <br />
+                <span className="text-[#BE185D]">
+                  accessible to every girl.
+                </span>
+              </h2>
+              <p className="text-slate-600 max-w-xl">
+                Partner with us to expand menstrual health education and create
+                more opportunities for girls everywhere.
+              </p>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-2 px-8 h-14 bg-[#BE185D] text-white text-sm font-bold rounded-full shadow-xl shadow-pink-200 hover:bg-[#9D174D] hover:shadow-2xl transition-all"
+            >
+              Partner with us <ArrowRight size={18} />
+            </motion.button>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* =====================================================================
+   7. FOOTER
+   ===================================================================== */
+function Footer() {
+  return (
+    <footer className="border-t border-pink-100 py-10 mt-10">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <p className="text-xl font-black text-[#BE185D]">
+            MPOWER<span className="text-slate-900">HER</span>
+          </p>
+          <p className="text-xs text-slate-500 mt-1">
+            Empowering girls. Building brighter futures.
+          </p>
+        </div>
+        <div className="flex items-center gap-6 text-sm text-slate-600">
+          <a href="#" className="hover:text-[#BE185D] transition-colors">
+            Who We Are
+          </a>
+          <a href="#" className="hover:text-[#BE185D] transition-colors">
+            What We Do
+          </a>
+          <a href="#" className="hover:text-[#BE185D] transition-colors">
+            Resources
+          </a>
+          <a href="#" className="hover:text-[#BE185D] transition-colors">
+            Our Impact
+          </a>
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          <button className="text-[#BE185D] font-bold">EN</button>
+          <span className="text-slate-300">|</span>
+          <button className="text-slate-400 hover:text-slate-900 transition-colors">
+            বাংলা
+          </button>
+        </div>
+      </div>
+      <p className="text-center text-xs text-slate-400 mt-6">
+        © 2025 MPOWERHER. All rights reserved.
+      </p>
+    </footer>
+  );
+}
+
+/* =====================================================================
+   MAIN PAGE
+   ===================================================================== */
+export default function Page() {
+  return (
+    <main className="min-h-screen bg-[#FFFBFD]">
+      <Navbar />
+      <Hero />
+      <ScrollStory />
+      <Letters />
+      <BreakSilence />
+      <CTA />
+      <Footer />
+    </main>
   );
 }

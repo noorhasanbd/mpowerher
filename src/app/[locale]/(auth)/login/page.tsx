@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Heart,
   Eye,
@@ -16,8 +16,8 @@ import {
   Sparkles,
   Loader2,
   AlertCircle,
-} from 'lucide-react';
-import { signIn } from '@/lib/auth-client'; // Adjust path if auth-client is elsewhere
+} from "lucide-react";
+import { signIn } from "@/lib/auth-client"; // Adjust path if auth-client is elsewhere
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,8 +27,8 @@ export default function LoginPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     rememberMe: false,
   });
 
@@ -42,11 +42,11 @@ export default function LoginPage() {
       const { data, error: signInError } = await signIn.email({
         email: formData.email,
         password: formData.password,
-        rememberMe: formData.rememberMe
+        rememberMe: formData.rememberMe,
       });
 
       if (signInError) {
-        setError(signInError.message || 'Invalid email or password.');
+        setError(signInError.message || "Invalid email or password.");
         setLoading(false);
         return;
       }
@@ -56,24 +56,24 @@ export default function LoginPage() {
 
       // Redirect to home or dashboard after 1.5s
       setTimeout(() => {
-        router.push('/');
+        router.push("/");
         router.refresh();
       }, 1500);
-
     } catch (err: any) {
-      setError(err?.message || 'An unexpected error occurred. Please try again.');
+      setError(
+        err?.message || "An unexpected error occurred. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[85vh] py-12 px-6 flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-[85vh] py-12 px-6 flex items-center justify-center relative overflow-hidden bg-white/95">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[35rem] h-[35rem] bg-pink-200/40 rounded-full blur-[130px] pointer-events-none -z-10" />
 
       <div className="w-full max-w-5xl bg-white/80 backdrop-blur-xl border border-pink-100 rounded-3xl shadow-2xl shadow-pink-100/60 overflow-hidden grid grid-cols-1 lg:grid-cols-12 relative z-10">
-        
         {/* LEFT COLUMN: Visual Showcase */}
         <div className="lg:col-span-5 bg-gradient-to-br from-[#C01C5C] via-pink-600 to-rose-600 p-8 sm:p-12 text-white flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
@@ -97,7 +97,8 @@ export default function LoginPage() {
                 Continue Your Learning Journey.
               </h2>
               <p className="text-pink-100/90 text-sm leading-relaxed">
-                Log in to resume your active modules, review your progress, and access confidential Q&A forums.
+                Log in to resume your active modules, review your progress, and
+                access confidential Q&A forums.
               </p>
             </div>
           </div>
@@ -128,7 +129,6 @@ export default function LoginPage() {
 
         {/* RIGHT COLUMN: Login Form */}
         <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-white">
-          
           <AnimatePresence mode="wait">
             {submitted ? (
               <motion.div
@@ -162,7 +162,8 @@ export default function LoginPage() {
                     Sign In to Account
                   </h3>
                   <p className="text-slate-500 text-xs sm:text-sm mt-1">
-                    Enter your credentials below to access your learning modules.
+                    Enter your credentials below to access your learning
+                    modules.
                   </p>
                 </div>
 
@@ -189,7 +190,7 @@ export default function LoginPage() {
                         setFormData({ ...formData, email: e.target.value })
                       }
                       placeholder="e.g. name@example.com"
-                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50"
+                      className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50 text-black"
                     />
                   </div>
                 </div>
@@ -210,14 +211,14 @@ export default function LoginPage() {
                   <div className="relative">
                     <Lock className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       required
                       value={formData.password}
                       onChange={(e) =>
                         setFormData({ ...formData, password: e.target.value })
                       }
                       placeholder="••••••••"
-                      className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50"
+                      className="w-full pl-11 pr-11 py-3 rounded-xl border border-slate-200 focus:border-[#C01C5C] focus:ring-2 focus:ring-pink-100 outline-none text-sm transition-all bg-slate-50/50 text-black"
                     />
                     <button
                       type="button"
@@ -242,7 +243,7 @@ export default function LoginPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, rememberMe: e.target.checked })
                     }
-                    className="h-4 w-4 rounded border-slate-300 text-[#C01C5C] focus:ring-pink-200 cursor-pointer"
+                    className="h-4 w-4 rounded accent-[#C01C5C] focus:ring-pink-500 cursor-pointer"
                   />
                   <label
                     htmlFor="rememberMe"
@@ -273,7 +274,7 @@ export default function LoginPage() {
 
                 {/* Link to Register */}
                 <p className="text-center text-xs text-slate-500 pt-2">
-                  Don't have an account yet?{' '}
+                  Don't have an account yet?{" "}
                   <Link
                     href="/register"
                     className="font-bold text-[#C01C5C] hover:underline"
@@ -285,7 +286,6 @@ export default function LoginPage() {
             )}
           </AnimatePresence>
         </div>
-
       </div>
     </div>
   );
