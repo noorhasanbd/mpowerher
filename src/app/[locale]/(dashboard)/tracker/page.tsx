@@ -21,7 +21,7 @@ import {
   deletePeriodLogAction,
   PeriodLogInput,
   PeriodLogRecord,
-} from "../../../lib/actions/periodActions"; // Adjust this path to match your project structure
+} from "@/lib/actions/periodActions"; // Adjust this path to match your project structure
 
 
 
